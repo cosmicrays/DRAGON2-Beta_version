@@ -1,0 +1,21 @@
+Structure for xsecs --> Three options are possible:
+
+  inelastic XSecs: The CROSEC routine is used to calculate inelastic cross sections down to Z=2. For proton-proton inelastic XSecs 
+  the parametrization adopted from Kafexhiu, E., Aharonian, F., Taylor, A. M., & Vila, G. S. (2014). Physical Review D, 90(12), 123014 are adopted.
+  
+ 
+	spallationXSecs: with the option spallxsec one is setting the nuclei spallation XSec and the secondary proton XSec.
+  It is possible to choose between:
+		- DRAGON2 algorithm for spall (With Webber code used when Z =< 2) --> Dragon procedure to calculate Sec protons from inelastic Xsec (CROSEC)
+    
+		- Webber for spall --> Dragon procedure to calculate Sec protons from inelastic Xsec (CROSEC)
+
+		- Default: DRAGON2
+	
+
+	Electrons and positrons: Kamae XSecs are used as default to compute the leptons spectra. It is set with the option leptons = Kamae.
+
+
+	Antiprotons: When one sets the antiprotons option (apy) secondary and tertiary antiprotons are calculated. 
+	It is possible to choose between: Winkler XSecs are used for secondary antiprotons. To calculate the tertiary contribution to antiprotons
+  the Dragon2 procedure from inelastic (CROSEC) XSecs is used
