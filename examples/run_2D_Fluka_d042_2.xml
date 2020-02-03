@@ -1,0 +1,92 @@
+<?xml version="3.1.0" ?>
+<Output>
+  <partialstore />
+  <fullstore />
+  <feedback value="2" />
+</Output>
+<Grid type="2D">
+  <Observer> 
+	<x value="8.3" />
+ 	<y value="0.0" />
+	<z value="0.0" />
+  </Observer>
+  <Rmax value="20" />
+  <L value="16" />
+  <DimR value="81" />
+  <DimZ value="81" /> 
+  <Ekmin value="0.01" />
+  <Ekmax value="100090." /> 
+  <Ekfactor value="1.1" />
+  <NuclearChain>
+    <Zmax value="1" />    
+    <Zmin value="1" />     
+    <PropLepton />         
+    <PropSecAntiProton />
+    <PropExtraComponent /> 
+  </NuclearChain>
+</Grid>
+<Algorithm>
+  <OpSplit>
+    <Nrept value="50" />
+    <Dtfactor value=".25" />
+    <Dtmin value="0.0001" />
+    <Dtmax value="64." />   
+  </OpSplit>
+</Algorithm>
+<Galaxy>
+  <Gas type="Galprop" />    
+  <SNR type="Ferriere" />  
+  <SNR_Extra type="Ferriere" /> 
+  <XCOmode type="SM96" />      
+  <Diffusion type="Exp"> 
+    <D0_1e28 value="4." /> 
+    <DiffRefRig value = "4" /> 
+    <Delta value="0.38" />    
+    <zt value="4" />          
+    <etaT value="0.0" />    
+  </Diffusion>
+  <Reacceleration type="Ptuskin94"> 
+    <vA_kms value="30." />         
+  </Reacceleration>
+  <Convection>
+      <v0_kms value="0" /> 
+      <dvdz_kmskpc value="0." />     
+  </Convection>
+  <CrossSection type="GalpropXSec" leptopt="Kamae" apopt="Fluka" ApCs="2" />  
+  <MagneticField type="Pshirkov"> 
+     <B0disk value="2.e-06" /> 
+     <B0halo value="4.e-06" /> 
+     <B0turb value="7.5e-06" />
+  </MagneticField>
+</Galaxy>
+
+<CR>
+  <ProtNormEn_GeV value="102.389" /> 
+  <ElNormEn_GeV value="33." />   
+  <ProtNormFlux value="0.04145" />  
+  <ElNormFlux value="0.0047" />   
+  <ElNormEnExtra_GeV value="300" />
+  <ElNormFluxExtra value=".67e-06" /> 
+  <!-- ************************** -->
+ <InjectionIndexElectrons>
+      <rho_0 value="7." />
+      <rho_1 value="100." />
+      <!--rho_2 value="800." /-->
+      <alpha_0 value="1.65" />
+      <alpha_1 value="2.74" />
+      <alpha_2 value="2.45" />
+      <!--alpha_3 value="4.8" /-->
+      <CutoffRigEl value="7000." />
+  </InjectionIndexElectrons>
+  <!-- ************************** -->
+  <InjectionIndexExtraComponent>
+       <rho_0 value="3" />
+       <!--rho_1 value="50." /-->
+       <alpha_0 value="1.5" />
+       <alpha_1 value="1.86" />
+       <!--alpha_2 value="1.9" /-->
+       <CutoffRigExtra value="1500." />
+  </InjectionIndexExtraComponent>
+  <!-- ************************** -->
+</CR>
+
