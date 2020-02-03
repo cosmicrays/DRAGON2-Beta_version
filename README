@@ -1,21 +1,13 @@
-Structure for xsecs --> Three options are possible:
+The program DRAGON consists of several files.
 
-  inelastic XSecs: The CROSEC routine is used to calculate inelastic cross sections down to Z=2. For proton-proton inelastic XSecs 
-  the parametrization adopted from Kafexhiu, E., Aharonian, F., Taylor, A. M., & Vila, G. S. (2014). Physical Review D, 90(12), 123014 are adopted.
-  
- 
-	spallationXSecs: with the option spallxsec one is setting the nuclei spallation XSec and the secondary proton XSec.
-  It is possible to choose between:
-		- DRAGON2 algorithm for spall (With Webber code used when Z =< 2) --> Dragon procedure to calculate Sec protons from inelastic Xsec (CROSEC)
-    
-		- Webber for spall --> Dragon procedure to calculate Sec protons from inelastic Xsec (CROSEC)
+In the directory named "data" the data used for cross section computation are stored in some ASCII files. They come from GALPROP.
+In the directory "output" the results of the program are stored. DRAGON accepts in input a string that uniquely identifies the run. DRAGON creates in "output" another folder labeled by the run's name and in this folder it stores the computed data. 
 
-		- Default: DRAGON2
-	
+The output is twofold: as ASCII files and as ROOT files.
 
-	Electrons and positrons: Kamae XSecs are used as default to compute the leptons spectra. It is set with the option leptons = Kamae.
+Please ignore the *Dict* files, which are only needed for the printout to be stored in ROOT files.
 
+The driver program can be found in dragon.cc, but the actual core of DRAGON is the the 2 files named "main_class.cc" and "include/main_class.h", since in there the C++ class CRevolutor, which takes care of the solution of the diffusion equation, is defined and implemented.
+The file "utils.cc" is just an helper. It includes some functions related to the magnetic fields, the turbulence and the gas models, that I did not put as class member functions.
 
-	Antiprotons: When one sets the antiprotons option (apy) secondary and tertiary antiprotons are calculated. 
-	It is possible to choose between: Winkler XSecs are used for secondary antiprotons. To calculate the tertiary contribution to antiprotons
-  the Dragon2 procedure from inelastic (CROSEC) XSecs is used
+As it is customary to see, I put as much information as I could in matrix form, to save computational time. It is much easier to look up into a matrix than to call functions, especially for the case of the cross sections.
