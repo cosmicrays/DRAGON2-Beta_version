@@ -1,13 +1,20 @@
 The program DRAGON consists of several files.
 
-In the directory named "data" the data used for cross section computation are stored in some ASCII files. They come from GALPROP.
-In the directory "output" the results of the program are stored. DRAGON accepts in input a string that uniquely identifies the run. DRAGON creates in "output" another folder labeled by the run's name and in this folder it stores the computed data. 
-
-The output is twofold: as ASCII files and as ROOT files.
+In the directory named "data" the data used for cross section computation are stored in some ASCII files.
+  Spalation cross sections come from Evoli-2019 (called DRAGON2 default option).
+  Antiprotons cross sections come from Winkler-2017.
+  
+In the directory "output" the results of the program are stored. DRAGON accepts in input a string that uniquely identifies the run. 
+The output is twofold: as an ASCII file and as fits files.
 
 Please ignore the *Dict* files, which are only needed for the printout to be stored in ROOT files.
 
-The driver program can be found in dragon.cc, but the actual core of DRAGON is the the 2 files named "main_class.cc" and "include/main_class.h", since in there the C++ class CRevolutor, which takes care of the solution of the diffusion equation, is defined and implemented.
-The file "utils.cc" is just an helper. It includes some functions related to the magnetic fields, the turbulence and the gas models, that I did not put as class member functions.
+The driver program can be found in dragon.cc, but the actual core of DRAGON is the the 2 files named "main_class.cc" and 
+"include/main_class.h", since in there the C++ class CRevolutor, which takes care of the solution of the diffusion equation, is 
+defined and implemented.
 
-As it is customary to see, I put as much information as I could in matrix form, to save computational time. It is much easier to look up into a matrix than to call functions, especially for the case of the cross sections.
+The file "utils.cc" is just an helper. It includes some functions related to the magnetic fields, the turbulence and the gas models, 
+that I did not put as class member functions.
+
+As it is customary to see, I put as much information as I could in matrix form, to save computational time. 
+It is much easier to look up into a matrix than to call functions, especially for the case of the cross sections.
