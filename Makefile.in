@@ -525,7 +525,7 @@ EXTRA_DIST = config_files/template.source.param \
 	data/isotope_list.dat \
 	data/MilkyWay_DR0.5_DZ0.1_DPHI10_RMAX20_ZMAX5_galprop_format.fits.gz \
 	data/galprop_barpol.dat \
-	data/crxsecs_fragmentation_Evoli2019_modified.dat \
+	data/crxsecs_fragmentation_Evoli2019_cumulative_modified.dat \
 	data/Winkler-ap_HeHe.dat \
 	data/Winkler-ap_Hep.dat \
 	data/Winkler-ap_pHe.dat \
