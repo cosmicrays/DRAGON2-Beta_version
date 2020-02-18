@@ -32,7 +32,8 @@ bool comparator(int i, int j) {
    int Zj = -1000;
    Utility::id_nuc(j, Aj, Zj);
    
-   if ( (Ai == Aj) && ( (Zi == 4 && Zj == 5) || (Zi == 6 && Zj == 7) ||(Zi == 14 && Zj == 16)) ) return true;
+   if ( (Ai == Aj) && ( (Zi == 4 && Zj == 5) || (Zi == 6 && Zj == 7) || (Zi == 1 && Zj == 2) ||(Zi == 14 && Zj == 16)) ) return true;
+   if ( ( (Ai==14) && (Aj==15) && (Zi == 6) && (Zj == 6) ) || ( (Ai==14) && (Aj==16) && (Zi == 6) && (Zj == 6) ) ) return true; //To make 6014 --> 7014 in the correct order (first 6014, then 7014). The rest of short lived beta decays must be ghost nuclei!    modified by Pedro 12/02/2020.
    if (Zi == Zj && (Ai>Aj)) return true;
    if (Zi>Zj) return true;
    return false;
@@ -42,6 +43,7 @@ DECMODE strtoDecMode(const string& str) {
    
    if (str == "EC") return EC;
    if (str == "B-") return BM;
+   //if (str == "B+") return BP; //only two channels have b+ decay, and they are very short lived. They are just included as ghost -- 12/02/2020
    if (str == "BB") return BB;
    if (str == "IT") return IT;
    if (str == "ECB-") return ECBM;

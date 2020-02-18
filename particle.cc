@@ -555,8 +555,11 @@ vector<double> TParticle2D::ComputeSecondarySource(vector<TParticle*> part, TSpa
          for (vector<TParticle*>::iterator ipart = part.begin(); ipart != part.end()-1; ++ipart) { // // //
 	   
 	   if ((*ipart)->GetDaughter() == uid && in->feedback >0)
-	     cout << "---> Nucleus " << ((*ipart))->GetUid() << " decays into current particle " << uid << endl; 	
+	     cout << "\n\n---> Nucleus " << ((*ipart))->GetUid() << " decays into current particle " << uid << endl; 	
 	   
+	   //if (uid < 96014){
+	   //  cout << "\n\n---> Nucleus " << ((*ipart))->GetUid() << "---> daughter " << ((*ipart))->GetDaughter() << " Current particle " << uid << " Meanlifetime: " << (*ipart)->GetLifetime() << endl;  
+	   //  continue ; }
             vector<double> spall_spectrum( spnet->GetXSec( (*ipart)->GetUid(), uid ) );
             if (spall_spectrum.size() == dimE || (*ipart)->GetDaughter() == uid) {
                

@@ -7,7 +7,7 @@ TSpallationNetwork::TSpallationNetwork(TGrid* coord, Input* in, std::vector<TXSe
     std::cout << "\nXSecs option " << in->spallationxsec << std::endl;
 
     if (in->spallationxsec == Fluka){
-      spallXsecFile = "data/FlukaSpallInclusiveXsec_H_He_new_modified.dat";
+      spallXsecFile = "data/FlukaSpallInclusiveXsec_last_cumulative.dat";
       spallXsecFile_p = "data/Fluka_Proton_production_new.dat";
     }
     else if (in->spallationxsec == GalpropXSec){
@@ -18,11 +18,11 @@ TSpallationNetwork::TSpallationNetwork(TGrid* coord, Input* in, std::vector<TXSe
       spallXsecFile = "data/webber_xsec_total.dat";
       spallXsecFile_p = "";}
     else if (in->spallationxsec == DRAGON2){
-      spallXsecFile = "data/crxsecs_fragmentation_Evoli2019_modified.dat";
+      spallXsecFile = "data/crxsecs_fragmentation_Evoli2019_cumulative_modified.dat";
       spallXsecFile_p = "";}
     else {
       std::cout << "Wrong SpallationXSec option!! --> Taking the default one (DRAGON2 for nuclei, DRAGON treatment for Secondary protons) \n" << std::endl;
-      spallXsecFile = "crxsecs_fragmentation_Evoli2019_modified.dat";
+      spallXsecFile = "crxsecs_fragmentation_Evoli2019_cumulative_modified.dat";
       spallXsecFile_p = "";
     }
 
