@@ -22,7 +22,7 @@ TSpallationNetwork::TSpallationNetwork(TGrid* coord, Input* in, std::vector<TXSe
       spallXsecFile_p = "";}
     else {
       std::cout << "Wrong SpallationXSec option!! --> Taking the default one (DRAGON2 for nuclei, DRAGON treatment for Secondary protons) \n" << std::endl;
-      spallXsecFile = "crxsecs_fragmentation_Evoli2019_cumulative_modified.dat";
+      spallXsecFile = "data/crxsecs_fragmentation_Evoli2019_cumulative_modified.dat";
       spallXsecFile_p = "";
     }
 
