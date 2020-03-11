@@ -4,6 +4,7 @@ In the directory named "data" the data used for cross section computation are st
   Spalation cross sections come from Evoli-2019 (called DRAGON2 default option).
   Antiprotons cross sections come from Winkler-2017.
   Leptons are taken from the Kamae routine.
+  Inelastic cross sections are taken from the CROSEC routines for nuclei down to He and the parametrization given in Kafexhiu, E., Aharonian, F., Taylor, A. M., & Vila, G. S. (2014). Physical Review D, 90(12), 123014.
   
 In the directory "output" the results of the program are stored. DRAGON accepts in input a string that uniquely identifies the run. 
 The output is twofold: as an ASCII file and as fits files.
@@ -14,8 +15,4 @@ The driver program can be found in dragon.cc, but the actual core of DRAGON is t
 "include/main_class.h", since in there the C++ class CRevolutor, which takes care of the solution of the diffusion equation, is 
 defined and implemented.
 
-The file "utils.cc" is just an helper. It includes some functions related to the magnetic fields, the turbulence and the gas models, 
-that I did not put as class member functions.
-
-As it is customary to see, I put as much information as I could in matrix form, to save computational time. 
-It is much easier to look up into a matrix than to call functions, especially for the case of the cross sections.
+The file "utils.cc" is just an helper with some functions not included as class member functions.
