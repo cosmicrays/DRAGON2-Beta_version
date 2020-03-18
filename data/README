@@ -5,12 +5,16 @@ The files Winkler-ap are the tables with the production cross sections of antipr
 
 The files galprop_WNEWTR_082693.CDR.dat, webber_xsec.dat and webber_xsec_total.dat contain the information required in the 
 fortran files for the WNEW and YIELDX respectively (these routines are used in when choosing the Webber03 option of spallation XSecs).
- 
-The fits file MilkyWay_DR0.5_DZ0.1_DPHI10_RMAX20_ZMAX5_galprop_format.fits.gz contains the Galprop spatial gas distribution.
-
-Finally, the isotope list contains the list of isotopes and its decay time and decay channels (when they are unstable) the 
+  
+On the other hand, the isotope list contains the list of isotopes and its decay time and decay channels (when they are unstable) the 
 code needs to read.
 
-The full information is available in:
+The full information of the DRAGON2 treatment of nuclear interactions is available in:
   Evoli, C., Gaggero, D., Vittino, A., Di Mauro, M., Grasso, D., & Mazziotta, M. N. (2018). 
   Journal of Cosmology and Astroparticle Physics, 2018(07), 006.
+
+
+The fits file MilkyWay_DR0.5_DZ0.1_DPHI10_RMAX20_ZMAX5_galprop_format.fits.gz contains the spatial gas distribution.
+See the section C1 of:
+  Evoli, C., Gaggero, D., Vittino, A., Di Bernardo, G., Di Mauro, M., Ligorini, A., ... & Grasso, D. (2017). 
+  Journal of Cosmology and Astroparticle Physics, 2017(02), 015.
