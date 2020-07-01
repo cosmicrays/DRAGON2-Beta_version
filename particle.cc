@@ -1290,12 +1290,12 @@ vector<double> TParticle3D::ComputeSecondarySource(vector<TParticle*> part, TSpa
 	 }
        }
      }
-     else if (uid == -999 && issec)
+     else if (uid == -999 && issec){
        cout << "Tertiary antiprotons" << endl;
-     if (in->apy != FlukaAp)   { 
+     	if (in->apy != FlukaAp)   { 
        
        cout << "*** DRAGON procedure for tertiary antiprotons! " << endl;
-       
+       	
        vector<TParticle*>::iterator iprim = part.end()-2; // Primary species
        
        vector<double> beta(coord->GetBeta());
@@ -1372,7 +1372,7 @@ vector<double> TParticle3D::ComputeSecondarySource(vector<TParticle*> part, TSpa
 	 }
        }
      }
-     
+    }
    } // if (issec && uid != -1000)
    
    else if (uid > 1000) { // nuclei spallation
