@@ -14,7 +14,7 @@ PAPER (II) Carmelo Evoli, Daniele Gaggero, Andrea Vittino, Mattia Di Mauro, Dari
 
 ## Installation
 
-# 1) Setting up the system
+## 1) Setting up the system
 
 External LIBRARIES needed:  
 
@@ -33,7 +33,7 @@ Within Homebrew, the following packages may be needed:
 - gsl
 - gcc
 
-# 2) Initialization
+## 2) Initialization
 
 Before installing the code launch the script to initialize installation tools:
 
@@ -43,7 +43,7 @@ For MAC users:
 
 ./startMAC.sh`
 
-# 3) configure
+## 3) configure
 
 Configure the code, a typical command line is:
 
@@ -53,13 +53,13 @@ where `$CFITSIO_DIR` is the path of your cfitsio library and `NUMCPU` is the mac
 
 The default installation path is in the same folder as the source code is (the program automatically creates the `bin/` and `lib/` subfolders). It can be set via `--prefix=<NEW_INSTALLATION_PATH>`
 
-# 4) make 
+## 4) make 
 
 Finally create the executable:
 
 `make`
 
-# 5) run
+## 5) run
 
 Run the example models in the examples/ directory:
 
