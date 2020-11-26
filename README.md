@@ -29,7 +29,7 @@ External LIBRARIES needed:
 
 Please make sure you have the GNU autotools and the GNU gcc compiler properly installed.
 
-HINT for MAC users:  We recommend to install the GCC compiler, the GNU autotools and the GSL/cfitsio libraries consistently with the same package manager. 
+HINT for MAC users:  We recommend to install the GCC/G++ compiler for C/C++, the GNU autotools and the GSL/cfitsio libraries consistently with the same package manager. 
 In particular, the installation process is fully tested within the HomeBrew environment ( https://brew.sh/ )
 Within Homebrew, the following packages are needed:
 - autoconf
@@ -43,11 +43,11 @@ Within Homebrew, the following packages are needed:
 
 Before installing the code launch the script to initialize installation tools:
 
-`./start.sh
+`./start.sh`
 
 For MAC users:
 
-./startMAC.sh`
+`./startMAC.sh`
 
 ## 3) configure
 
@@ -55,14 +55,12 @@ Configure the code, a typical command line is:
 
 `./configure --with-cfitsio=$CFITSIO_DIR --with-numcpu=2`
 
-HINT for MAC users: We recommend to use the GCC/G++ compiler (e.g. as provided by HomeBrew) and explicitly instruct configure to use it. 
-Please check this example (here, g++-9 is the name of the executable associated to the C++ compiler, and gcc-9 is the name of the executable associated to the C compiler within the Homebrew package manager):
+The default installation path is in the same folder as the source code is (the program automatically creates the `bin/` and `lib/` subfolders). It can be set via `--prefix=<NEW_INSTALLATION_PATH>`
 
+HINT for MAC users: We recommend to use the GCC/G++ compiler (e.g. as provided by HomeBrew) and explicitly instruct configure to use it. 
+Please check this example (g++-9 and gcc-9 are the compilers installed with the Homebrew package manager):
 `./configure --with-cfitsio=$CFITSIO_DIR  CXX=g++-9 CC=gcc-9 --with-numcpu=2`
  
-where `$CFITSIO_DIR` is the path of your cfitsio library and `NUMCPU` is the machine core number.
-
-The default installation path is in the same folder as the source code is (the program automatically creates the `bin/` and `lib/` subfolders). It can be set via `--prefix=<NEW_INSTALLATION_PATH>`
 
 ## 4) make 
 
@@ -75,7 +73,7 @@ Finally create the executable:
 Run the example models in the examples/ directory:
 
 `./DRAGON examples/FILENAME.xml` 
-m with installation!
+
 
 ## CREDITS
 
