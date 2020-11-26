@@ -1,9 +1,10 @@
 /**
  * @file    dragon.cc
- * @author  Luca Maccione
- * @email   luca.maccione@lmu.de
+ * @author  Daniele Gaggero, Carmelo Evoli, Pedro De La Torre Luque
+ * @email   daniele.gaggero@gmail.com
  * @brief   Implementation of the DRAGON class. See the .h file
  */
+
 
 
 #include "dragon.h"
