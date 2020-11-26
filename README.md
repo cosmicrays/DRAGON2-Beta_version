@@ -4,9 +4,9 @@ Version 2 Beta
 
 Current Development Team:
 
-Daniele Gaggero
-Carmelo Evoli
-Pedro De La Torre Luque
+Daniele Gaggero;
+Carmelo Evoli;
+Pedro De La Torre Luque;
 Silvio Sergio Cerri
 
 ## References
