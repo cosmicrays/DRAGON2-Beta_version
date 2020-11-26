@@ -48,6 +48,9 @@ For MAC users:
 Configure the code, a typical command line is:
 
 `./configure --with-cfitsio=$CFITSIO_DIR --with-numcpu=2`
+
+HINT for MAC users: We recommend to use the GCC compiler (e.g. as provided by HomeBrew) and explicitly instruct configure to use it. Please check this example:
+./configure --with-cfitsio=$CFITSIO_DIR  CXX=g++-9 CC=gcc-9 --with-numcpu=4
  
 where `$CFITSIO_DIR` is the path of your cfitsio library and `NUMCPU` is the machine core number.
 
