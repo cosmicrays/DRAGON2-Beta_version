@@ -7,9 +7,9 @@ Version 2 Beta
 
 We refer to the following technical papers:
 
-PAPER (I) Carmelo Evoli, Daniele Gaggero, Andrea Vittino, Giuseppe Di Bernardo, Mattia Di Mauro, Arianna Ligorini, Piero Ullio, Dario Grasso, "Cosmic-ray propagation with DRAGON2: I. numerical solver and astrophysical ingredients", JCAP 02 (2017) 015
+[PAPER I] Carmelo Evoli, Daniele Gaggero, Andrea Vittino, Giuseppe Di Bernardo, Mattia Di Mauro, Arianna Ligorini, Piero Ullio, Dario Grasso, "Cosmic-ray propagation with DRAGON2: I. numerical solver and astrophysical ingredients", JCAP 02 (2017) 015 (https://arxiv.org/abs/1607.07886)
 
-PAPER (II) Carmelo Evoli, Daniele Gaggero, Andrea Vittino, Mattia Di Mauro, Dario Grasso, Mario Nicola Mazziotta, "Cosmic-ray propagation with DRAGON2: II. Nuclear interactions with the interstellar gas", JCAP 07 (2018) 006
+[PAPER II] Carmelo Evoli, Daniele Gaggero, Andrea Vittino, Mattia Di Mauro, Dario Grasso, Mario Nicola Mazziotta, "Cosmic-ray propagation with DRAGON2: II. Nuclear interactions with the interstellar gas", JCAP 07 (2018) 006  (https://arxiv.org/abs/1711.09616)
 
 
 ## Installation
