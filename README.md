@@ -27,10 +27,10 @@ External LIBRARIES needed:
 - [GSL] (http://www.gnu.org/software/gsl/) 
 - [CFITSIO] (http://heasarc.gsfc.nasa.gov/fitsio/) 
 
-Please make sure you have the GNU autotools and the GNU gcc compiler properly installed.
+Please make sure you have the GNU autotools and the GNU GCC/G++ compiler properly installed.
 
 HINT for MAC users:  We recommend to install the GCC/G++ compiler for C/C++, the GNU autotools and the GSL/cfitsio libraries consistently with the same package manager. 
-In particular, the installation process is fully tested within the HomeBrew environment ( https://brew.sh/ )
+In particular, the installation process is fully tested within the HomeBrew environment ( https://brew.sh/ ).
 Within Homebrew, the following packages are needed:
 - autoconf
 - automake
@@ -41,7 +41,7 @@ Within Homebrew, the following packages are needed:
 
 ## 2) Initialization
 
-Before installing the code launch the script to initialize installation tools:
+Before installing the code, you should launch this shell script to initialize the GNU autotools:
 
 `./start.sh`
 
@@ -51,20 +51,28 @@ For MAC users:
 
 ## 3) configure
 
-Configure the code, a typical command line is:
+Launch configure as in this example:
 
 `./configure --with-cfitsio=$CFITSIO_DIR --with-numcpu=2`
 
-The default installation path is in the same folder as the source code is (the program automatically creates the `bin/` and `lib/` subfolders). It can be set via `--prefix=<NEW_INSTALLATION_PATH>`
+The default installation path is in the same folder as the source code is (the program automatically creates the `bin/` and `lib/` subfolders). 
+It can be set via `--prefix=<NEW_INSTALLATION_PATH>`
+
+Please try 
+
+`./configure --help`
+
+if you need more information about installation options.
 
 HINT for MAC users: We recommend to use the GCC/G++ compiler (e.g. as provided by HomeBrew) and explicitly instruct configure to use it. 
+
 Please check this example (g++-9 and gcc-9 are the compilers installed with the Homebrew package manager):
+
 `./configure --with-cfitsio=$CFITSIO_DIR  CXX=g++-9 CC=gcc-9 --with-numcpu=2`
  
-
 ## 4) make 
 
-Finally create the executable:
+With make you can finally create the DRAGON executable:
 
 `make`
 
