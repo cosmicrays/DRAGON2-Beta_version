@@ -2,7 +2,7 @@
 <Output>
   <partialstore />  <!-- The code writes the spectrum at Sun position for each species on a FITS file (optional) -->
   <fullstore />    <!-- The code writes the complete (r,z,p) grid of propagated particles for each species on a FITS file (optional) -->
-  <feedback value="1" />
+  <feedback value="1" />      <!-- To get the entire output, this value has to be set to 2 -->
 </Output>
 <Grid type="2D">          <!-- Number of spatial dimensions. Options: 2D, 3D -->
   <Observer> 
@@ -14,11 +14,11 @@
   <L value="4" />       <!-- Halo size in kpc. The Galaxy extends from -L to L -->
   <DimR value="41" />   <!-- Number of grid points along R -->
   <DimZ value="81" />   <!-- Number of grid points along vertical axis --> 
-  <Ekmin value=".1" />       <!-- Miminum kinetic energy of propagated particles in GeV -->
-  <Ekmax value="1000." />   <!-- Maximum kinetic energy of propagated particles in GeV --> 
+  <Ekmin value="0.01" />       <!-- Miminum kinetic energy of propagated particles in GeV -->
+  <Ekmax value="100000." />   <!-- Maximum kinetic energy of propagated particles in GeV --> 
   <Ekfactor value="1.2" />  <!-- Logaritmic spacing of energy grid. E[i] = exp( ln(Ekmin) + i ln(Ekfactor) ) -->
   <NuclearChain>
-    <Zmax value="14" />    <!-- Maximum atomic number of propagated particles -->
+    <Zmax value="26" />    <!-- Maximum atomic number of propagated particles -->
     <Zmin value="1" />     <!-- Minimum atomic number of propagated particles -->
     <PropLepton />         <!-- The code propagates leptonic species (optional) -->
     <PropExtraComponent />
@@ -39,16 +39,16 @@
   <SNR_Extra type="Ferriere" /> <!-- Source distribution for the extra component; options: the same as SNRType  (optional) -->
   <XCOmode type="SM96" />        <!-- Model for the X_CO factor; options: SM96, galprop_2004, galprop_2010, constant --> 
   <Diffusion type="Constant"> <!-- Spatial distribution of the diffusion coefficient; options: Constant, Exp, Qtau -->
-    <D0_1e28 value="2.7" />   <!-- Normalization of the diffusion coefficient at reference rigidity DiffRefRig Unit: 10^28 cm^2/s -->
+    <D0_1e28 value="3.7" />   <!-- Normalization of the diffusion coefficient at reference rigidity DiffRefRig Unit: 10^28 cm^2/s -->
     <DiffRefRig value = "4" /> <!-- Reference rigidity for the normalization of the diffusion coefficient -->
-    <Delta value="0.6" />    <!-- Slope of the diffusion coefficient spectrum -->
+    <Delta value="0.45" />    <!-- Slope of the diffusion coefficient spectrum -->
     <zt value="4" />          <!-- Scale heigth of the diffusion coefficient, useful in Exp mode: D(z) \propto exp(z/zt) (optional) -->
     <etaT value="1." />       <!-- Low energy correction factor of the diffusion coefficient: D \propto beta^etaT  -->
   </Diffusion>
   <Reacceleration type="Ptuskin94"> <!-- Optional block -->
-    <vA_kms value="0." />          <!-- Alfvén velocity in km/s -->
+    <vA_kms value="13." />          <!-- Alfvén velocity in km/s -->
   </Reacceleration>
-  <CrossSection type="GalpropXSec" leptopt="Kamae" apopt="GalpropFunction" ApCs="2" />  <!-- Model for cross sections. leptopt is the model for electron and positron production; options: Kamae, GalpropTable -->
+  <CrossSection type="DRAGON2" leptopt="Kamae" apopt="GalpropFunction" ApCs="2" />  <!-- Model for cross sections. leptopt is the model for electron and positron production; options: Kamae, GalpropTable -->
   <MagneticField type="Pshirkov"> <!-- Model for the magnetic field. Options: Pshirkov, Farrar, Uniform, Toymodel -->
      <B0disk value="2.e-06" /> <!-- Useful for Pshirkov field: halo regular field normalization in Gauss -->
      <B0halo value="4.e-06" /> <!-- Useful for Pshirkov field: turbulent regular field normalization in Gauss -->
@@ -57,40 +57,45 @@
 </Galaxy>
 
 <CR>
-  <ProtNormEn_GeV value="100" />  <!-- Reference energy for nuclei normalization in GeV -->
+  <ProtNormEn_GeV value="53.645" />  <!-- Reference energy for nuclei normalization in GeV -->
   <ElNormEn_GeV value="33." />   <!-- Reference energy for primary electron normalization in GeV --> 
-  <ProtNormFlux value="5.e-2" />  <!-- Proton flux at reference energy   for normalization; in DRAGON units: GeV^-1 m^-2 s^-1 sr^-1 -->
-  <ElNormFlux value="0.004" />   <!-- Electron flux at reference energy for normalization; in DRAGON units: GeV^-1 m^-2 s^-1 sr^-1 -->   
-  <ElNormEnExtra_GeV value="300" />     <!-- Reference energy for primary electron extra component normalization in GeV -->
-  <ElNormFluxExtra value="1.e-06" />  <!-- Extra component flux at reference energy; in DRAGON units: GeV^-1 m^-2 s^-1 sr^-1 -->
-  
+  <ProtNormFlux value="2.57e-1" />  <!-- Proton flux at reference energy   for normalization; in DRAGON units: GeV^-1 m^-2 s^-1 sr^-1 -->
+  <ElNormFlux value="0.0046" />   <!-- Electron flux at reference energy for normalization; in DRAGON units: GeV^-1 m^-2 s^-1 sr^-1 -->   
+  <ElNormEnExtra_GeV value="20." />     <!-- Reference energy for primary electron extra component normalization in GeV -->
+  <ElNormFluxExtra value="2.3e-03" />  <!-- Extra component flux at reference energy; in DRAGON units: GeV^-1 m^-2 s^-1 sr^-1 -->
+
+  <!--
   <!-- ************************** -->
-  <InjectionIndexAllNuclei>  <!-- You can add an arbitrary number of breaks!! -->    
-    <alpha_0 value="2.22" />  <!-- First injection slope for nuclei -->
-    <rho_0 value="1." />     <!-- Position of first break (rigidity) in GV -->    
-    <alpha_1 value="2.22" />  <!-- Second injection slope for nuclei -->
-    <rho_1 value="11." />    <!-- Position of second break (rigidity) in GV --> 
-    <alpha_2 value="2.22" /> 
+  <!-- <InjectionIndexAllNuclei>  <!-- You can add an arbitrary number of breaks!! -->    
+  <!--  <alpha_0 value="2." />  <!-- First injection slope for nuclei -->
+  <!--  <rho_0 value="9." />     <!-- Position of first break (rigidity) in GV -->    
+  <!--  <alpha_1 value="2.4" />  <!-- Second injection slope for nuclei -->
+  <!--  <rho_1 value="11." />    <!-- Position of second break (rigidity) in GV --> 
+  <!--  <alpha_2 value="2.4" /> 
     <rho_2 value="111." />
-    <alpha_3 value="2.22" />
+    <alpha_3 value="2.4" />
+    <rho_3 value="370" />
+    <alpha_4 value="2.2" />
   </InjectionIndexAllNuclei>
   <!-- ************************** -->
+  
   <InjectionIndexElectrons> <!-- You can add an arbitrary number of breaks!! -->
-      <rho_0 value="1." />   <!-- Position of first break (rigidity) in GV -->   
+      <alpha_0 value="1.6" /> <!-- First injection slope for electrons -->
+      <rho_0 value="1." />   <!-- Position of first break (rigidity) in GV -->
+      <alpha_1 value="1.6" />  
       <rho_1 value="5." />
-      <rho_2 value="10." />
-      <alpha_0 value="1.80" /> <!-- First injection slope for electrons -->
-      <alpha_1 value="1.80" />
-      <alpha_2 value="2.50" />
-      <alpha_3 value="2.50" />
-      <CutoffRigEl value="20000." /> 
+      <alpha_2 value="1.6" />
+      <rho_2 value="7." />
+      <alpha_3 value="2.7" />
+      <CutoffRigEl value="1000." /> 
   </InjectionIndexElectrons>     
   <!-- ************************** -->
   <InjectionIndexExtraComponent>
        <rho_0 value="1." />
-       <alpha_0 value="1.85" />
-       <alpha_1 value="1.85" />
-       <CutoffRigExtra value="10000." /> 
-  </InjectionIndexExtraComponent>    
+       <alpha_0 value="2.28" />
+       <rho_0 value="7." />
+       <alpha_1 value="2.4" />
+       <CutoffRigExtra value="1000." />  
+  </InjectionIndexExtraComponent>
   <!-- ************************** -->
 </CR>

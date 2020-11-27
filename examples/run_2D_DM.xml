@@ -18,7 +18,7 @@
   <Ekmax value="1000." />   <!-- Maximum kinetic energy of propagated particles in GeV --> 
   <Ekfactor value="1.2" />  <!-- Logaritmic spacing of energy grid. E[i] = exp( ln(Ekmin) + i ln(Ekfactor) ) -->
   <NuclearChain>
-    <Zmax value="14" />    <!-- Maximum atomic number of propagated particles -->
+    <Zmax value="2" />    <!-- Maximum atomic number of propagated particles -->
     <Zmin value="1" />     <!-- Minimum atomic number of propagated particles -->
     <PropLepton />         <!-- The code propagates leptonic species (optional) -->
     <PropExtraComponent />
@@ -48,7 +48,7 @@
   <Reacceleration type="Ptuskin94"> <!-- Optional block -->
     <vA_kms value="0." />          <!-- Alfvén velocity in km/s -->
   </Reacceleration>
-  <CrossSection type="DRAGON2" leptopt="Kamae" apopt="Winkler" ApCs="2" />  <!-- Model for cross sections. leptopt is the model for electron and positron production; options: Kamae, GalpropTable -->
+  <CrossSection type="DRAGON2" leptopt="Kamae" apopt="GalpropFunction" ApCs="2" />  <!-- Model for cross sections. leptopt is the model for electron and positron production; options: Kamae, GalpropTable -->
   <MagneticField type="Pshirkov"> <!-- Model for the magnetic field. Options: Pshirkov, Farrar, Uniform, Toymodel -->
      <B0disk value="2.e-06" /> <!-- Useful for Pshirkov field: halo regular field normalization in Gauss -->
      <B0halo value="4.e-06" /> <!-- Useful for Pshirkov field: turbulent regular field normalization in Gauss -->
@@ -94,3 +94,26 @@
   </InjectionIndexExtraComponent>    
   <!-- ************************** -->
 </CR>
+
+<!-- **************** -->
+<!-- DARK MATTER PART -->
+<!-- **************** -->
+<DarkMatter Reaction="Annihilation" Model="SelfTable" Profile="NFW">   
+    <!-- Reaction can be "Annihilation" or "Decay", (spectrum) Model can be "SelfTable" or "Delta", (density) Profile can be "Iso", "NFW", "Kra", "Moore", "Einasto" -->
+    <PropDMLepton />       <!-- If this flag is specified, leptons originating from DM annihilation/decay are computed -->
+    <PropDMAntiProton />   <!-- If this flag is specified, antiprotons originating from DM annihilation/decay are computed -->
+    <Mass value="1000." />  <!-- DM particle mass in GeV --> 
+<!-- **************** -->
+    <!-- LifeTime value="1e26" -->   <!-- if Decay is specified, the lifetime in seconds -->
+    <SigmaV value="2.e-23" />         <!-- if Annihilation is specified, the <sigma v> in cm^3/2 -->
+<!-- **************** -->
+    <SSDensity value="0.41" />       <!-- Dark Matter local energy density in GeV/cm^3 -->
+    <EkDelta value="1000." />         <!-- if Delta is specified as a spectrum model, this is the energy in GeV at which particles are injected -->
+    <LeptonDatafile     value="DM/mumu_1000gev_pos.txt" /> 
+    <!-- if SelfTable is specified as a spectrum model, this is the datafile with the inj spectrum in GeV^-1 for leptons     -->
+    <AntiprotonDatafile value="DM/mumu_1000gev_ap.txt" />  
+    <!-- if SelfTable is specified as a spectrum model, this is the datafile with the inj spectrum in GeV^-1 for antiprotons -->
+    <!--Channel value="17" /-->      
+</DarkMatter>
+<!-- **************** -->
+<!-- **************** -->

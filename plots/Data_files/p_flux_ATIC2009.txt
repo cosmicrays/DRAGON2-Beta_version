@@ -1,0 +1,26 @@
+# Data from SSDC cosmic rays database www.ssdc.asi.it 
+# File generated today 20200621 
+# Errors may contain statistic and systematic depending on the options set when drawing the graph 
+# Fluxes are multiplied by a power of Energy (or Rigidity) if the option is set when drawing the graph 
+# Horizontal errors usually are not uncertanties of the measurement but correspond to binning. See publication. 
+#
+# GraphTitle: p ATIC-2 BRASP (2009); 2002-12-29 00:00:00.0,2003-01-18 00:00:00.0; 
+# XLabel: kinetic energy (GeV) 
+# YLabel: Flux#timesE^{2.7} ((m^{2} s sr GeV)^{-1}#times(GeV/n)^{2.7}) 
+#
+# Columns: X, XErrorLow, XErrorHigh, Y, YErrorLow, YErrorHigh 
+4.826200e+01  0.000000e+00 0.000000e+00  1.127819e+04  1.054036e+02 1.054036e+02 
+7.696201e+01  0.000000e+00 0.000000e+00  1.102393e+04  6.193217e+01 6.193217e+01 
+1.220620e+02  0.000000e+00 0.000000e+00  1.075740e+04  4.302960e+01 4.302960e+01 
+1.950620e+02  0.000000e+00 0.000000e+00  1.078663e+04  7.628449e+01 7.628449e+01 
+3.090620e+02  0.000000e+00 0.000000e+00  1.062476e+04  1.057190e+02 1.057190e+02 
+4.910620e+02  0.000000e+00 0.000000e+00  1.097956e+04  1.291713e+02 1.291713e+02 
+7.780620e+02  0.000000e+00 0.000000e+00  1.138042e+04  1.918049e+02 1.918049e+02 
+1.229062e+03  0.000000e+00 0.000000e+00  1.151279e+04  3.075936e+02 3.075936e+02 
+1.959062e+03  0.000000e+00 0.000000e+00  1.222326e+04  3.868121e+02 3.868121e+02 
+3.099062e+03  0.000000e+00 0.000000e+00  1.289047e+04  6.138320e+02 6.138320e+02 
+4.919062e+03  0.000000e+00 0.000000e+00  1.300799e+04  9.291422e+02 9.291422e+02 
+7.789062e+03  0.000000e+00 0.000000e+00  1.359410e+04  1.253356e+03 1.253356e+03 
+1.229906e+04  0.000000e+00 0.000000e+00  1.511384e+04  1.654800e+03 1.654800e+03 
+1.959906e+04  0.000000e+00 0.000000e+00  1.510027e+04  2.717273e+03 2.717273e+03 
+3.099906e+04  0.000000e+00 0.000000e+00  1.226130e+04  3.319653e+03 3.319653e+03 
