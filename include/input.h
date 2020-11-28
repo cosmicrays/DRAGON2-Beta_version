@@ -1,9 +1,11 @@
 /**
- * @file input.h
- * @author Luca Maccione
- * @email luca.maccione@desy.de
- * @brief File where class Input is defined.
+ * @file    dragon.cc
+ * @author  Daniele Gaggero, Carmelo Evoli, Pedro De La Torre Luque
+ * @email   daniele.gaggero@gmail.com
+ * @brief   Implementation of the DRAGON class. See the .h file
  */
+
+
 
 #ifndef _INPUT_H
 #define _INPUT_H
@@ -102,6 +104,8 @@ public:
    string filename; /**< Run name. */
    bool timestepstore; //MW130801 write each Evolutor dt loop to file
    int feedback;
+   bool DontNormalize;
+   bool OnlyPrimaries;
 
    // Algorithm
    int Nrept; /**< Number of iterations for a single timestep value \sa dtfactor \sa dtmin \sa dtmat. Only used in class \sa TCREvolutor .*/

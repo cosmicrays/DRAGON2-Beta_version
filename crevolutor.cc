@@ -1,9 +1,8 @@
 /**
- * @file crevolutor.cc
- * @authors Luca Maccione, Daniele Gaggero
- * @email luca.maccione@desy.de
- * @email daniele.gaggero@sissa.it
- * @brief Classes for the solution of the transport equation are implemented. See the .h file.
+ * @file    dragon.cc
+ * @author  Daniele Gaggero, Carmelo Evoli, Pedro De La Torre Luque
+ * @email   daniele.gaggero@gmail.com
+ * @brief   Implementation of the DRAGON class. See the .h file
  */
 
 #include "crevolutor.h"
