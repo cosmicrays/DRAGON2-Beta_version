@@ -224,32 +224,40 @@ double TDMSource::DM_profile(double radius, double zeta) {
 	
 	double Rs;
 	
-	case ISO :
-		
-		Rs = 4.38; // kpc. From 1012.4515
-		profile = 1./( 1. + pow(radius_spherical/Rs, 2.) );		
-		profile_evaluated_at_sun = 1./( 1. + pow(robs/Rs, 2.) );				
-		break;
-		
-	case NFW:
-		
-		Rs = 24.42; // kpc. From 1012.4515		
-		profile = (Rs/radius_spherical)/pow((1. + radius_spherical/Rs), 2.);		
-		profile_evaluated_at_sun = (Rs/robs)/pow((1. + robs/Rs), 2.);				
-		break;
-		
+	double alpha = 0.17;
 	
-	case Einasto:
-		
-		double alpha = 0.17;
-		profile = (-2./alpha)*( pow(radius_spherical/Rs, alpha) - 1.);
-		profile_evaluated_at_sun = (-2./alpha)*( pow(rsun/Rs, alpha) - 1.);
-		break;
-		
-	default :
-		break;
+	switch(in->dmprof) {
 	
-	profile_normalized = profile/profile_evalated_at_sun;
+		case ISO :
+			
+			Rs = 4.38; // kpc. From 1012.4515
+			profile = 1./( 1. + pow(radius_spherical/Rs, 2.) );		
+			profile_evaluated_at_sun = 1./( 1. + pow(robs/Rs, 2.) );				
+			break;
+			
+		case NFW:
+			
+			Rs = 24.42; // kpc. From 1012.4515		
+			profile = (Rs/radius_spherical)/pow((1. + radius_spherical/Rs), 2.);		
+			profile_evaluated_at_sun = (Rs/robs)/pow((1. + robs/Rs), 2.);				
+			break;
+			
+		
+		case Einasto:
+			
+			profile = (-2./alpha)*( pow(radius_spherical/Rs, alpha) - 1.);
+			profile_evaluated_at_sun = (-2./alpha)*( pow(robs/Rs, alpha) - 1.);
+			break;
+			
+		default:
+			
+			profile = 1.;
+			profile_evaluated_at_sun = 1.;
+			break;
+			
+	}
+	
+	profile_normalized = profile/profile_evaluated_at_sun;
 	return profile_normalized;
 	
 	/*double robs = in->robs;
