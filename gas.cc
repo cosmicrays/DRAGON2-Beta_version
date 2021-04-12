@@ -37,19 +37,23 @@ TH2Gas::TH2Gas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
             
 	double height_H2 = 0;
 	switch(in->gas_model) {
-	case BronfFerr :
+	case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
 	  height_H2 = (r > 2.5) ? 0.059 : 0.015;
 	  density.push_back(2.0* (150.*exp(-pow((r-0.05)/.2, 2.))+0.49*exp(-pow((r-5.3)/2.2, 2.))+.24*exp(-pow((r-8.1)/1.5, 2.)))*exp(-M_LN2*pow(z[l]/height_H2,2.)));
 	  break;
                   
-	case NS :
+	case Nakanishi2006:  // https://arxiv.org/abs/astro-ph/0610769
 	  density.push_back(2.0*.94*(11.2*exp(-(r)*(r)/.874)+.83*exp(-pow((r-4)/3.2, 2.)))*exp(-M_LN2*pow(z[l]/(1.06/1000.*(10.8*exp(0.28*(r))+42.78)), 2.)));
 	  break;
                   
-	case Galprop :
+	case Bronfman1988:  // http://articles.adsabs.harvard.edu/pdf/1988ApJ...324..248B
 	  density.push_back(2.0*TGas::nH2_av(r, z[l], DeltaZ, dzzGal, in));
 	  break;
-                  
+
+	case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	  std::cout << "The Pohl2008 gas distribution can only be chosen in the 3D configuration of the Galaxy... please, choose another H2 gas option"<< std::endl;   
+	  break;
+	  
 	default:
 	  density.push_back(-1);
 	}
@@ -77,20 +81,23 @@ TH2Gas::TH2Gas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
                
 	  double height_H2 = 0;
 	  switch(in->gas_model) {
-	  case BronfFerr :
+	  case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
 	    height_H2 = (r > 2.5) ? 0.059 : 0.015;
 	    density.push_back(2.0* (150.*exp(-pow((r-0.05)/.2, 2.))+0.49*exp(-pow((r-5.3)/2.2, 2.))+.24*exp(-pow((r-8.1)/1.5, 2.)))*exp(-M_LN2*pow(z[l]/height_H2,2.)));
 	    break;
                      
-	  case NS :
+	  case Nakanishi2006:  // https://arxiv.org/abs/astro-ph/0304338
 	    density.push_back(2.0*.94*(11.2*exp(-(r)*(r)/.874)+.83*exp(-pow((r-4)/3.2, 2.)))*exp(-M_LN2*pow(z[l]/(1.06/1000.*(10.8*exp(0.28*(r))+42.78)), 2.)));
 	    break;
                      
-	  case Galprop :
+	  case Bronfman1988:  // http://articles.adsabs.harvard.edu/pdf/1988ApJ...324..248B
 	    density.push_back(2.0*TGas::nH2_av(r, z[l], DeltaZ, dzzGal, in));
-                     
 	    break;
-                     
+
+	  case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	    std::cout << "The Pohl2008 gas distribution is not yet implemented, it will be available soon... please, choose another H2 gas option"<< std::endl;   
+	    break;
+            
 	  default:
 	    density.push_back(-1);
 	  }
@@ -132,28 +139,32 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
       for (int l = 0; l < dimz; l++) {
 	double DeltaZ = Coord->GetDeltaZ(l);
             
-	double altezza_H1 = 0;
-	double densita_H1 = 0;
+	double height_H1 = 0;
+	double density_H1 = 0;
             
 	switch(in->gas_model) {
-	case BronfFerr :
-	  if (r < 2.5) altezza_H1 = 0.045;
-	  else if (r < 8.5) altezza_H1 = 0.115;
-	  else altezza_H1 = 0.115*exp((r-8.5)/6.7);
-	  if (r < 3.) densita_H1 = 0.57*exp((r-3.)/0.4)+8.*exp(-pow(r/0.2, 2.));
-	  else if (r < 13.) densita_H1 = 0.57;
-	  else densita_H1 = 0.57*exp(-(r-13.)/4.);
-	  density.push_back( densita_H1*exp(-M_LN2*pow(z[l]/altezza_H1, 2.)) );
+	case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	  if (r < 2.5) height_H1 = 0.045;
+	  else if (r < 8.5) height_H1 = 0.115;
+	  else height_H1 = 0.115*exp((r-8.5)/6.7);
+	  if (r < 3.) density_H1 = 0.57*exp((r-3.)/0.4)+8.*exp(-pow(r/0.2, 2.));
+	  else if (r < 13.) density_H1 = 0.57;
+	  else density_H1 = 0.57*exp(-(r-13.)/4.);
+	  density.push_back( density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)) );
 	  break;
                   
-	case NS :
-	  densita_H1 =  .94*(.6*exp(-r/2.4) + .24*exp(-pow((r-9.5)/4.8, 2.)));
-	  altezza_H1 = 1.06*(116.3 + 19.3*(r) +  4.1*(r)*(r) -0.05*(r)*(r)*(r))/1000.;
-	  density.push_back(densita_H1*exp(-M_LN2*pow(z[l]/altezza_H1, 2.)));
+	case Nakanishi2003:  // https://arxiv.org/abs/astro-ph/0304338
+	  density_H1 =  .94*(.6*exp(-r/2.4) + .24*exp(-pow((r-9.5)/4.8, 2.)));
+	  height_H1 = 1.06*(116.3 + 19.3*(r) +  4.1*(r)*(r) -0.05*(r)*(r)*(r))/1000.;
+	  density.push_back(density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)));
 	  break;
                   
-	case Galprop :
+	case Gordon1976:  // http://articles.adsabs.harvard.edu/pdf/1976ApJ...208..346G
 	  density.push_back(TGas::nHI_av(r,z[l], DeltaZ, dzzGal));
+	  break;
+
+	case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	  std::cout << "The Pohl2008 gas distribution can only be chosen in the 3D configuration of the Galaxy... please, choose another HI gas option"<< std::endl;   
 	  break;
                   
 	default:
@@ -171,8 +182,7 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
       
     dimx = x.size();
     dimy = y.size();
-    dimz = z.size();
-      
+    dimz = z.size();      
       
       
     for (int k = 0; k < dimx; k++) {
@@ -183,31 +193,34 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	for (int l = 0; l < dimz; l++) {
 	  double DeltaZ = Coord->GetDeltaZ(l);
                
-	  double altezza_H1 = 0;
-	  double densita_H1 = 0;
+	  double height_H1 = 0;
+	  double density_H1 = 0;
                
 	  switch(in->gas_model) {
-	  case BronfFerr :
-	    if (r < 2.5) altezza_H1 = 0.045;
-	    else if (r < 8.5) altezza_H1 = 0.115;
-	    else altezza_H1 = 0.115*exp((r-8.5)/6.7);
-	    if (r < 3.) densita_H1 = 0.57*exp((r-3.)/0.4)+8.*exp(-pow(r/0.2, 2.));
-	    else if (r < 13.) densita_H1 = 0.57;
-	    else densita_H1 = 0.57*exp(-(r-13.)/4.);
-	    density.push_back( densita_H1*exp(-M_LN2*pow(z[l]/altezza_H1, 2.)) );
+	  case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	    if (r < 2.5) height_H1 = 0.045;
+	    else if (r < 8.5) height_H1 = 0.115;
+	    else height_H1 = 0.115*exp((r-8.5)/6.7);
+	    if (r < 3.) density_H1 = 0.57*exp((r-3.)/0.4)+8.*exp(-pow(r/0.2, 2.));
+	    else if (r < 13.) density_H1 = 0.57;
+	    else density_H1 = 0.57*exp(-(r-13.)/4.);
+	    density.push_back( density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)) );
 	    break;
                      
-	  case NS :
-	    densita_H1 =  .94*(.6*exp(-r/2.4) + .24*exp(-pow((r-9.5)/4.8, 2.)));
-	    altezza_H1 = 1.06*(116.3 + 19.3*(r) +  4.1*(r)*(r) -0.05*(r)*(r)*(r))/1000.;
-	    density.push_back(densita_H1*exp(-M_LN2*pow(z[l]/altezza_H1, 2.)));
+	  case Nakanishi2003:   // https://arxiv.org/abs/astro-ph/0304338
+	    density_H1 =  .94*(.6*exp(-r/2.4) + .24*exp(-pow((r-9.5)/4.8, 2.)));
+	    height_H1 = 1.06*(116.3 + 19.3*(r) +  4.1*(r)*(r) -0.05*(r)*(r)*(r))/1000.;
+	    density.push_back(density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)));
 	    break;
                      
-	  case Galprop :
+	  case Gordon1976:  // http://articles.adsabs.harvard.edu/pdf/1976ApJ...208..346G
 	    density.push_back(TGas::nHI_av(r,z[l], DeltaZ, dzzGal));
-                     
+            break;
+
+	  case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	    std::cout << "The Pohl2008 gas distribution is not yet implemented, it will be available soon... please, choose another HI gas option"<< std::endl;   
 	    break;
-                     
+	    
 	  default:
 	    density.push_back(-1);
 	  }
@@ -233,7 +246,10 @@ THIIGas::THIIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
   vector<double> x;
   vector<double> y;
   vector<double> z;
-   
+
+  double height_HII = 0;
+  double density_HII = 0;
+	  
   if (Coord->GetType() == "2D") {
     x = Coord->GetR();
     z = Coord->GetZ();
@@ -250,15 +266,23 @@ THIIGas::THIIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	double DeltaZ = Coord->GetDeltaZ(l);
             
 	switch(in->gas_model) {
-	case BronfFerr :
-	case NS :
-	  density.push_back(0);
+	case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	  if (r < 2.5) height_HII = 0.045;
+	  else if (r < 8.5) height_HII = 0.115;
+	  else height_HII = 0.115*exp((r-8.5)/6.7);
+	  if (r < 3.) density_HII = 0.57*exp((r-3.)/0.4)+8.*exp(-pow(r/0.2, 2.));
+	  else if (r < 13.) density_HII = 0.57;
+	  else density_HII = 0.57*exp(-(r-13.)/4.);
+	  density.push_back( density_HII*exp(-M_LN2*pow(z[l]/height_HII, 2.)) );
 	  break;
-                  
-	case Galprop :
-	  density.push_back(TGas::nHII_av(r, z[l], DeltaZ, dzzGal));
-	  //cout << density.back() << endl;
+
+	case Cordes1991:
+	  std::cout << "The Cordes1991 gas distribution needs to use a 3D model of the Galaxy structure" << std::endl;
 	  break;
+	  
+	case Ne2001:
+	  std::cout << "The Ne2001 gas distribution needs to use a 3D model of the Galaxy structure" << std::endl;
+	    break;
                   
 	default:
 	  density.push_back(-1);
@@ -287,16 +311,25 @@ THIIGas::THIIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	  double DeltaZ = Coord->GetDeltaZ(l);
                
 	  switch(in->gas_model) {
-	  case BronfFerr :
-	  case NS :
-	    density.push_back(0);
+	    
+	  case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	  if (r < 2.5) height_HII = 0.045;
+	  else if (r < 8.5) height_HII = 0.115;
+	  else height_HII = 0.115*exp((r-8.5)/6.7);
+	  if (r < 3.) density_HII = 0.57*exp((r-3.)/0.4)+8.*exp(-pow(r/0.2, 2.));
+	  else if (r < 13.) density_HII = 0.57;
+	  else density_HII = 0.57*exp(-(r-13.)/4.);
+	  density.push_back( density_HII*exp(-M_LN2*pow(z[l]/height_HII, 2.)) );
+	  break;
+	  
+	  case Cordes1991:
+	    std::cout << "The Cordes1991 gas distribution is not yet implemented, it will be available soon... please, choose another HII gas option"<< std::endl;
 	    break;
-                     
-	  case Galprop :
-	    density.push_back(TGas::nHII_av(r, z[l], DeltaZ, dzzGal));
-                     
+
+	  case Ne2001:
+	    std::cout << "The Ne2001 gas distribution is not yet implemented, it will be available soon... please, choose another HII gas option"<< std::endl;
 	    break;
-                     
+	  
 	  default:
 	    density.push_back(-1);
 	  }
@@ -480,7 +513,6 @@ double TGas::nHI_av(double R, double z,double dz,double dzz)
 
 double TGas::nHII_av(double R, double z,double dz,double dzz)
 {
-  //   double R=sqrt(x*x + y*y);
   double nHII_av_=0.0;
   int nuse=0;
    
@@ -502,7 +534,12 @@ double TGas::X_CO(double r, Input* in) {
   case(SM96): // Strong&Mattox 1996
     return 1.9;
     break;
-  case (galprop_2004): //Strong2004
+    
+  case(Arimoto1996):  // https://academic.oup.com/pasj/article/48/2/275/1586728 
+    return 0.9*exp(r/7.1);
+    break;
+    
+  case (Strong2004): //Strong2004; dx.doi.org/10.1051/0004-6361:20040172
     if (r < 3.5)
       return 0.4;
     else if (r < 5.5)
@@ -513,7 +550,8 @@ double TGas::X_CO(double r, Input* in) {
       return 1.5;
     else return 10.;
     break;
-  case (galprop_2010): //compatible with Fermi-LAT gamma profile?
+    
+  case (Ackermann2012):  // https://arxiv.org/pdf/1202.4039.pdf
     if (r < 2.0)
       return 0.4;
     else if (r < 5.5)
@@ -533,10 +571,12 @@ double TGas::X_CO(double r, Input* in) {
     else
       return 200;
     break;
+    
   case (constant):
     return in->xco_constant;
     break;
-  case (dragon):
+    
+  case (Evoli2012):    // https://arxiv.org/abs/1203.0570
     if (r < 2.0)
       return in->xco_inner;
     else

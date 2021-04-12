@@ -282,9 +282,14 @@ int Input::LoadFile(const string inputfilename) {
 		// Gas
 		el1 = el->FirstChildElement("Gas");
 		if (el1) el1->QueryStringAttribute("type", &gmod);
-		if (gmod == "BronfFerr") gas_model = BronfFerr;
-		else if (gmod == "NS") gas_model = NS;
-		else if (gmod == "Galprop") gas_model = Galprop;
+		if (gmod == "Ferriere2007") gas_model = Ferriere2007;
+		else if (gmod == "Nakanishi2003") gas_model = Nakanishi2003;
+		else if (gmod == "Nakanishi2006") gas_model = Nakanishi2006;
+		else if (gmod == "Gordon1976") gas_model = Gordon1976;
+		else if (gmod == "Bronfman1988") gas_model = Bronfman1988;
+		else if (gmod == "Cordes1991") gas_model = Cordes1991;
+		else if (gmod == "Ne2001") gas_model = Ne2001;		
+		else if (gmod == "Pohl2008") gas_model = Pohl2008;
 		else if (gmod == "Uniform") gas_model = UniformGas;
 		else cerr << "Your gas model is not implemented. You chose: " << gmod << endl;
 
@@ -395,14 +400,15 @@ int Input::LoadFile(const string inputfilename) {
 			exit(NOXCO);
 		}
 		if (gmod == "SM96") xco_mode = SM96; //Strong And Mattox 1996 -- constant value equal to 1.9 in standard units
-		else if (gmod == "galprop_2004") xco_mode = galprop_2004;
-		else if (gmod == "galprop_2010") xco_mode = galprop_2010;
+		else if (gmod == "Arimoto1996") xco_mode = Arimoto1996;
+		else if (gmod == "Strong2004") xco_mode = Strong2004;
+		else if (gmod == "Ackermann2012") xco_mode = Ackermann2012;
 		else if (gmod == "constant")  {
 			xco_mode = constant;
 			xco_constant = QueryDoubleAttribute("XCO_constant", el1);
 		}
-		else if (gmod == "dragon") {
-			xco_mode = dragon;
+		else if (gmod == "Evoli2012") {
+			xco_mode = Evoli2012;
 			xco_inner = QueryDoubleAttribute("XCO_inner", el1);
 			xco_outer = QueryDoubleAttribute("XCO_outer", el1);
 		}
