@@ -17,105 +17,122 @@
 #include <cstdlib> 
 using namespace std;
 
-// SN SOURCES
 
+
+// SN SOURCES
 double TAstrophysicalSource::SourceDistribution(double x, double y, double z) {
 
-	double radius = sqrt(x*x+y*y);
-	double theta    = atan2(y,x) + M_PI;
+  double radius = sqrt(x*x+y*y);
+  double theta = atan2(y,x) + M_PI;
+  
+  double Ferriere_distribution;
+  double spiral_beta = 3.53;
+  double spiral_z_h = 1.00;
+  double robs = in->robs;
 
-	double Ferriere_distribution;
-	double spiral_beta = 3.53;
-	double spiral_z_h = 1.00;
-	double robs = in->robs;
+  double Ferriere_classic;
+  double rate_Ferr_typeI;
+  double A_Ferr;
+  double expo_sum_Ferr;
+  double R0_Ferr;
+
+  double R1_Yus;
+  double a_Yus;
+  double b_Yus;
+  double z0_Yus;
 
 
-	//cout <<"$$$ SourceDistribution " << " " << SNR_model << " " << x << " " << y << " " << z << endl;
 
-	switch (SNR_model) {
 
-	case Lorimer: 
-		// parametrization based on PSR catalogue: Lorimer et al., Mon. Not. R. Astron. Soc. 372, 777 (2006)
-		if (radius >= 15.0) return 0.0;
-		else return pow ( radius/robs , 1.9 ) * exp ( -5.00*(radius-robs)/robs - fabs(z)/0.2  );
-		break;
+  switch (SNR_model) {
 
-	case Ferriere: 
-		// parametrization based on PSR catalogue + disk stars: K. Ferriere, Rev.Mod.Phys. 73, 1031-1066 (2001)
-		if (radius > 3.7) return (50.0*(0.79*exp(-pow(z/0.212,2.))+0.21*exp(-pow(z/0.636,2.)))*exp(-((radius)*(radius)-robs*robs)/(6.8*6.8)) + 7.3*exp(-(radius-robs)/4.5-fabs(z)/0.325));//)*pow(sin(2.*3.14*radius/16.+0.),2.);
-		else return (177.5*(0.79*exp(-pow(z/0.212,2.))+0.21*exp(-pow(z/0.636,2.)))*exp(-pow((radius-3.7)/2.1, 2.)) + 7.3*exp(-(radius-robs)/4.5-fabs(z)/0.325));//*pow(sin(2.*3.14*radius/16.+0.),2.);
-		break;
 
-	case CaseBhattacharya: 
-		// parametrization based on SNR catalogue: Case and  Bhattacharya, A&A Supplement, v.120, p.437-440 (1996)
-		if (radius >= 15.0) return 0.0;
-		else return pow ( radius/robs , 1.69 ) * exp ( -3.33*(radius-robs)/robs - fabs(z)/0.2  );
-		break;
+  case Ferriere:
+    // parametrization based on PSR catalogue + disk stars: K. Ferriere, Rev.Mod.Phys. 73, 1031-1066 (2001)
 
-	case GiguereKaspi :  
-		// Ref: Faucher-Giguere & Kaspi ApJ 643, 332 (2006)
-		if (radius >= 15.0) return 0.0;
-		else
-			return pow(((radius+0.55)/(robs+0.55)),1.64)*exp(-4.0*((radius-robs)/(robs+0.55)))*exp(-fabs(z)/0.1);
-		break;
+  	rate_Ferr_typeI = 7.3 * exp( - (radius-robs)/4.5 - fabs(z)/0.325 );
+  	expo_sum_Ferr = 0.79 * exp(-pow(z/0.212,2.)) + 0.21 * exp(-pow(z/0.636,2.));
 
-	case PointSource : 
-		// Point source at GC -- MW130827: You can specify the position now.
-		cout <<"$$$ SourceDistribution-PointSource " << " " << SNR_model << endl;
-		cout <<" PointSource " << pointsrc_x << " " << pointsrc_y << " " << pointsrc_z << endl;
-		if ( fabs(x-pointsrc_x)<.05 && fabs(y-pointsrc_y)<.05 && fabs(z-pointsrc_z)<.05 ) return 1.;
-		else return 0.;
-		break;
+  	if (radius > 3.7)	{
+    	A_Ferr = 50.0;
+    	Ferriere_classic = A_Ferr * expo_sum_Ferr * exp( - pow( (radius-3.7)/2.1 , 2.) ) + rate_Ferr_typeI;
+    					}
+    else 	{
+    	A_Ferr = 177.5;
+    	Ferriere_classic = A_Ferr * expo_sum_Ferr * exp( - pow( (radius-robs)/6.8 , 2.) ) + rate_Ferr_typeI;
+    		}
+    return Ferriere_classic;
+    break;
+    
+  
 
-	case Ring : 
-		if ( radius >= ringmin && radius <= ringmax && fabs(z) <= 0.2 ) return 1.;
-		else return 0.;
-		break;
+  // The following 4 cases are different parametrizations of the same general source-distribution function
+  // the parameters are (R1_Yus, a_Yus, b_Yus, z0_Yus)
+  // from Yusifov & Kucuk: A&A 459 p.545-553 (2004). DRAGON technical paper eq.(C.9)
 
-	case Rings :
-		if (radius > 3.7)
-			Ferriere_distribution = (50.0*(0.79*exp(-pow(z/0.212,2.))+0.21*exp(-pow(z/0.636,2.)))*exp(-((radius)*(radius)-robs*robs)/(6.8*6.8)) + 7.3*exp(-(radius-robs)/4.5-fabs(z)/0.325));
-		else
-			Ferriere_distribution = (177.5*(0.79*exp(-pow(z/0.212,2.))+0.21*exp(-pow(z/0.636,2.)))*exp(-pow((radius-3.7)/2.1, 2.)) + 7.3*exp(-(radius-robs)/4.5-fabs(z)/0.325));
+  case Lorimer: 
+    // parametrization based on PSR catalogue: Lorimer et al., Mon. Not. R. Astron. Soc. 372, 777 (2006)
 
-		if (rings_period == 0) {
-			if (fabs(y) < .1 && fabs(z) == 0. && fabs(x) < 10.) {
-				//cout << "No rings" << endl;
-				if (in->feedback >0) cout << "Ferriere distrib at radius = " << radius << " and z = " << z << " ---> " <<  Ferriere_distribution << endl;
-			}
-			//cout << endl;
-			return Ferriere_distribution;
-		}
-		else return (Ferriere_distribution * pow(sin( 2.*3.14*radius/rings_period + rings_phase ),2.));
-		break;
+  	R1_Yus = 0.;
+  	a_Yus = 1.9;
+  	b_Yus = 5.00;
+  	z0_Yus = 0.2;
+    if (radius >= 15.0) return 0.0;
+    else return pow( (radius+R1_Yus) / (robs+R1_Yus) , a_Yus ) * exp( -b_Yus * ( (radius-robs)/(robs+R1_Yus) ) - fabs(z)/z0_Yus );
+    break;
+    
+  case CaseBhattacharya: 
+    // parametrization based on SNR catalogue: Case and  Bhattacharya, A&A Supplement, v.120, p.437-440 (1996)
 
-	case Galprop_:   
-		// To be done : put here the model by GALPROP
-		if (radius >= 15.0){
-			return 0;
-		}
-		else {
-			return pow ( radius/robs , 1.25 ) * exp ( -3.56*(radius-robs)/robs - fabs(z)/0.2  );
-		}
-		break;
+  	R1_Yus = 0.;
+  	a_Yus = 1.69;
+  	b_Yus = 3.33;
+  	z0_Yus = 0.2;
+    if (radius >= 15.0) return 0.0;
+    else return pow( (radius+R1_Yus) / (robs+R1_Yus) , a_Yus ) * exp( -b_Yus * ( (radius-robs)/(robs+R1_Yus) ) - fabs(z)/z0_Yus );
+    break;
+    
+  case GiguereKaspi :  
+    // parametrization based on PSR catalogue: Faucher-Giguere & Kaspi ApJ 643, 332 (2006)
 
-	case Const :
-		return 1.;
-		break;
+  	R1_Yus = 0.55;
+  	a_Yus = 1.64;
+  	b_Yus = 4.00;
+  	z0_Yus = 0.1;
+    if (radius >= 15.0) return 0.0;
+    else return pow( (radius+R1_Yus) / (robs+R1_Yus) , a_Yus ) * exp( -b_Yus * ( (radius-robs)/(robs+R1_Yus) ) - fabs(z)/z0_Yus );
+    break;
 
-	case BlasiSmooth :
-		// Add ref!
-		return (1/(robs*robs)) * pow((radius/robs),2.) * exp(-spiral_beta*(radius-robs)/robs) * exp(-fabs(z)/spiral_z_h);
-		break;
+  case StrongMoskalenko1998:  
+  	// ad hoc parametrization to correct the "gradient problem": Strong & Moskalenko: ApJ 509:212-228 (1998), eq.(6) - Table 2
 
-		//MW130828: Disable regular sources if I only want to look at one Extra Component:
-	case OnlyExtra:
-		return 0;
-		break;
-
-	default :
-		return -1;
-	}
+  	R1_Yus = 0.;
+  	a_Yus = 0.5;
+  	b_Yus = 1.00;
+  	z0_Yus = 0.2;
+    if (radius >= 20.0) return 0.0;
+    else return pow( (radius+R1_Yus) / (robs+R1_Yus) , a_Yus ) * exp( -b_Yus * ( (radius-robs)/(robs+R1_Yus) ) - fabs(z)/z0_Yus );
+    break;
+            
+            
+  case BlasiAmato :
+    // Blasi & Amato: JCAP01(2012)011, eq.(4.1) [radial profile] + eq.(4.3) [latitude profile]
+    return 1./(robs*robs) * pow( radius/robs , 2. ) * exp( -spiral_beta*(radius-robs)/robs ) * exp( -fabs(z)/spiral_z_h );
+    break;
+    
+  // customizable TEST cases
+  case Const :
+    return 1.;
+    break;
+    
+  case OnlyExtra:
+  // Disable regular sources if I only want to look at one Extra Component:
+    return 0.0;
+    break;
+    
+  default:
+    return -1;
+  }
 }
 
 
@@ -310,48 +327,10 @@ TAstrophysicalSource::TAstrophysicalSource(TGrid* Coord_, Input* in_, TGeometry*
 	ringmax = in->ringmax;
 	rings_period = in->rings_period;
 	rings_phase  = in->rings_phase;
-	if(SNR_model == Rings && in->feedback >0)
-		cout << "***  Rings period " << rings_period << " and phase " << rings_phase << " ***" << endl;
 
-	//MW130827: implementing placeable point sources
 
 	cout << "%% AstrophysicalSource " << SNR_model << endl;
 
-	if(SNR_model == PointSource) {
-
-		cout <<" PointSource " << pointsrc_x << " " << pointsrc_y << " " << pointsrc_z << endl;
-		if (Coord->GetType() == "2D") {
-
-			double pointsrc_r = sqrt(pointsrc_x*pointsrc_x + pointsrc_y*pointsrc_y);
-			//find low bins
-			int ix,iz;
-			ix = iz = 0;
-			while(Coord->GetR()[ix + 1] <= pointsrc_r){ix++;}
-			while(Coord->GetZ()[iz + 1] <= pointsrc_z){iz++;}
-
-			pointsrc_r = Coord->GetR()[ix];
-			pointsrc_z = Coord->GetZ()[iz];
-
-			if (in->feedback >0)
-				cout << "### 2D-grid  Point Source at (" << pointsrc_r << " , " << pointsrc_z << ") ###" << " " << ix << " " << iz << endl;
-
-		} else {
-			//find low bins
-			int ix,iy,iz;
-			ix = iy = iz = 0;
-			while(Coord->GetX()[ix + 1] <= in->pointsrc_x){ix++;}
-			while(Coord->GetY()[iy + 1] <= in->pointsrc_y){iy++;}
-			while(Coord->GetZ()[iz + 1] <= in->pointsrc_z){iz++;}
-
-			pointsrc_x = Coord->GetX()[ix];
-			pointsrc_y = Coord->GetY()[iy];
-			pointsrc_z = Coord->GetZ()[iz];
-
-			if (in->feedback >0)
-				cout << "***  Point Source at (" << pointsrc_x << " , " << pointsrc_y << " , " << pointsrc_z << ") ***" << endl;
-		}
-
-	}
 
 	if (Coord->GetType() == "2D") {
 

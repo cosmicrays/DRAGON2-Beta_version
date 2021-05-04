@@ -312,37 +312,12 @@ int Input::LoadFile(const string inputfilename) {
 			exit(NOSNR);
 		}
 		if (gmod == "Lorimer") SNR_model = Lorimer;
-		else if (gmod == "Galprop") SNR_model = Galprop_;
+		else if (gmod == "Galprop") SNR_model = StrongMoskalenko1998;
 		else if (gmod == "Ferriere") SNR_model = Ferriere;
 		else if (gmod == "CaseBhattacharya") SNR_model = CaseBhattacharya;
 		else if (gmod == "GiguereKaspi") SNR_model = GiguereKaspi;
-		else if (gmod == "PointSource"){
-			SNR_model = PointSource;
-
-			pointsrc_x = QueryDoubleAttributeWithDefault("PointX", el1, 0);
-			pointsrc_y = QueryDoubleAttributeWithDefault("PointY", el1, 0);
-			pointsrc_z = QueryDoubleAttributeWithDefault("PointZ", el1, 0);
-
-			cout <<" PointSource " << pointsrc_x << " " << pointsrc_y << " " << pointsrc_z << endl;
-
-
-		}
-		else if (gmod == "OneRing") {
-			SNR_model = Ring;
-			ringmin = QueryDoubleAttribute("RingMin", el1);
-			ringmax = QueryDoubleAttribute("RingMax", el1);
-			if (ringmin >= ringmax) {
-				cerr << "Please reconsider your settings for the Ring SNR distribution. Ringmin = " << ringmin << " Ringmax = " << ringmax << endl;
-				exit(PROBRING);
-			}
-		}
-		else if (gmod == "Rings") {
-			SNR_model = Rings;
-			rings_period = QueryDoubleAttribute("RingsPeriod", el1);
-			rings_phase = QueryDoubleAttribute("RingsPhase", el1);
-		}
-		else if (gmod == "Blasi") SNR_model = BlasiSmooth;
-		else if (gmod == "OnlyExtra") //MW130828
+		else if (gmod == "Blasi") SNR_model = BlasiAmato;
+		else if (gmod == "OnlyExtra")
 		{
 			if(prop_extracomp) SNR_model = OnlyExtra;
 		}
@@ -360,26 +335,7 @@ int Input::LoadFile(const string inputfilename) {
 			else if (gmod == "Ferriere") SNR_model_Extra = Ferriere;
 			else if (gmod == "CaseBhattacharya") SNR_model_Extra = CaseBhattacharya;
 			else if (gmod == "GiguereKaspi") SNR_model_Extra = GiguereKaspi;
-			else if (gmod == "PointSource"){
-				SNR_model_Extra = PointSource;
-
-				pointsrc_Extra_x = QueryDoubleAttributeWithDefault("PointX", el1, 0);
-				pointsrc_Extra_y = QueryDoubleAttributeWithDefault("PointY", el1, 0);
-				pointsrc_Extra_z = QueryDoubleAttributeWithDefault("PointZ", el1, 0);
-
-				cout <<"SNR_Extra" << " " << SNR_model_Extra << " " << pointsrc_Extra_x << " " << pointsrc_Extra_y << " " << pointsrc_Extra_z << endl;
-
-			}
-			else if (gmod == "Ring") {
-				SNR_model_Extra = Ring;
-				ringmin_extra = QueryDoubleAttribute("RingMin", el1);
-				ringmax_extra = QueryDoubleAttribute("RingMax", el1);
-				if (ringmin_extra >= ringmax_extra) {
-					cerr << "Please reconsider your settings for the Ring SNR distribution for the extra component. Ringmin = " << ringmin_extra << " Ringmax = " << ringmax_extra << endl;
-					exit(PROBRING);
-				}
-			}
-			else if (gmod == "Blasi") SNR_model_Extra = BlasiSmooth;
+			else if (gmod == "Blasi") SNR_model_Extra = BlasiAmato;
 			else {
 				cerr << "Your SNR model for the extra component is not implemented. You chose: " << gmod << endl;
 			}

@@ -49,7 +49,7 @@ typedef enum {
   Einasto=4 /**< Einasto profile. */
 } DMprofile;
 
-typedef enum {SM96, galprop_2004, galprop_2010, constant, dragon} xco_modes;
+typedef enum {SM96, Arimoto1996, Strong2004, Ackermann2012, constant, Evoli2012} xco_modes;
 typedef enum {Azimuthal, Spiral, Prouda, Wmap, Tkachev, Pshirkov, Farrar, Uniform, Simple, ToyModel} MagFieldModel;
 //ToyModel: magnetic field directed along x axis. Useful to test anisotropic diffusion
 
@@ -58,6 +58,14 @@ typedef enum {Azimuthal, Spiral, Prouda, Wmap, Tkachev, Pshirkov, Farrar, Unifor
  * @brief Chose the gas distribution: Bronfmann + Ferriere, Nakanishi \& Sophue or Galprop.
  */
 typedef enum {
+  Ferriere2007,
+  Nakanishi2003,
+  Nakanishi2006,
+  Gordon1976,
+  Bronfman1988,
+  Pohl2008,
+  Cordes1991,
+  Ne2001,
   BronfFerr, /**< Set Bronfmann + Ferriere distribution. */
   NS, /**< Set Nakanishi \& Sophue distribution. */
   Galprop, /**< Set Galprop distribution. */
@@ -75,16 +83,13 @@ typedef enum {
  * @brief Chose the SNR (CR source) distribution: Galprop, Ferriere, a Point Source at Galactic Center, a Ring (\sa ringmin, ringmax).
  */
 typedef enum {
-  Galprop_,
+  StrongMoskalenko1998,
   Const,
   Lorimer, /**< based on PSR catalogue: Lorimer et al., Mon. Not. R. Astron. Soc. 372, 777–800 (2006)  */
   Ferriere,   /**<  based on PSR catalogue + disk stars: K. Ferriere, Rev.Mod.Phys. 73, 1031-1066 (2001) */
   CaseBhattacharya,   /**<  based on SNR catalogue: Case and  Bhattacharya, Astronomy and Astrophysics Supplement, v.120, p.437-440 (1996) */
   GiguereKaspi, /**< Set GiguereKaspi distribution */
-  PointSource, /**< Set Point Source at GC. */
-  Ring, /**< Set Ring of sources: \sa ringmin \sa ringmax . */
-  Rings,
-  BlasiSmooth,
+  BlasiAmato,
   OnlyExtra,
   Custom
 } SNRType;
