@@ -86,7 +86,7 @@ TH2Gas::TH2Gas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	    density.push_back(2.0* (150.*exp(-pow((r-0.05)/.2, 2.))+0.49*exp(-pow((r-5.3)/2.2, 2.))+.24*exp(-pow((r-8.1)/1.5, 2.)))*exp(-M_LN2*pow(z[l]/height_H2,2.)));
 	    break;
                      
-	  case Nakanishi2006:  // https://arxiv.org/abs/astro-ph/0304338
+	  case Nakanishi2006:  // https://arxiv.org/abs/astro-ph/0610769
 	    density.push_back(2.0*.94*(11.2*exp(-(r)*(r)/.874)+.83*exp(-pow((r-4)/3.2, 2.)))*exp(-M_LN2*pow(z[l]/(1.06/1000.*(10.8*exp(0.28*(r))+42.78)), 2.)));
 	    break;
                      
