@@ -4,7 +4,7 @@ The files Winkler-ap are the tables with the production cross sections of antipr
 (taken from Winkler, M. W. (2017). Journal of Cosmology and Astroparticle Physics, 2017(02), 048.).
 
 The files galprop_WNEWTR_082693.CDR.dat, webber_xsec.dat and webber_xsec_total.dat contain the information required in the 
-fortran files for the WNEW and YIELDX respectively (these routines are used in when choosing the Webber03 option of spallation XSecs).
+fortran files for the WNEW and YIELDX respectively (these routines are used when choosing the Webber03 option of spallation XSecs).
   
 On the other hand, the isotope list contains the list of isotopes and its decay time and decay channels (when they are unstable) the 
 code needs to read.
