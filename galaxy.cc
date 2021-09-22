@@ -264,12 +264,19 @@ TReaccelerationCoefficient::TReaccelerationCoefficient(vector<double> pp, TDiffu
   double Dpp_constant[pp.size()];
 
   for (unsigned int i = 0; i < pp.size(); ++i){
-    if(pp[i] < in->rho_b)
-      a = (in->DiffT == Anisotropic) ? in->DeltaPar : dperp->GetDelta(); //MW130711: integrate Anisotropic Diffusion
+    if(pp[i] < in->rho_b){
+      if (in->VariableDelta == true)
+	a = (in->DiffT == Anisotropic) ? in->DeltaPar : in->delta_B + in->delta_A*in->robs;
+      else
+	a = (in->DiffT == Anisotropic) ? in->DeltaPar : dperp->GetDelta(); //MW130711: integrate Anisotropic Diffusion
+    }
     else
       a = (in->DiffT == Anisotropic) ? in->DeltaPar : dperp->GetDelta_h();
-        
-    Dpp_constant[i]= 1.0/(a*(4.-a)*(4.-a*a));       // Ptuskin-2003
+
+    if (in->VariableDelta == true)
+      Dpp_constant[i] = 1.0;
+    else
+      Dpp_constant[i]= 1.0/(a*(4.-a)*(4.-a*a));       // Ptuskin-2003
     if(in->diff_reacc == 1) Dpp_constant[i] *= 4.0/3.0; // Seo & Ptuskin
   }
     
@@ -297,16 +304,16 @@ TReaccelerationCoefficient::TReaccelerationCoefficient(vector<double> pp, TDiffu
 	  double xx = dperp->GetCoord()->GetX()[ix];
 	  double yy = dperp->GetCoord()->GetY()[iy];
 	  double zz = dperp->GetCoord()->GetZ()[iz];
-
+	  
 	  double reacc_spatial = 1.0/(*i);
-
+	  
 	  double spiral_factor_dperp = max( min( pow(geom->GetPattern(ix,iy,iz), in->SA_diff), in->SA_cut_diff), 1./in->SA_cut_diff );
 	  double spiral_factor_dpp = max( min( spiral_factor_dperp * pow(geom->GetPattern(ix,iy,iz), 2*in->SA_vA), in->SA_cut_vA), 1./in->SA_cut_vA );
-
+	  
 	  reacc_spatial *= spiral_factor_dpp; //mw 130422
 	  if (dperp->GetCoord()->IsInLocalBubble(xx,yy,zz)) reacc_spatial *= pow(in->LB_vA, 2*dperp->GetCoord()->IsInLocalBubble(xx,yy,zz)) * pow(in->LB_diff, dperp->GetCoord()->IsInLocalBubble(xx,yy,zz));
 	  dpp.push_back(reacc_spatial);
-
+	  
 	  index++;
         }
     }
@@ -318,15 +325,28 @@ TReaccelerationCoefficient::TReaccelerationCoefficient(vector<double> pp, TDiffu
 	  dpp.push_back(reacc_spatial);
         }
     }
-}
 
+
+vector<double> r_vec = dperp->GetCoord()->GetR();
+if (in->VariableDelta == true){
+  for (int ir=0; ir<dimr; ir++) {
+    for (unsigned int k = 0; k < dimz; ++k) {
+      double izr = index(ir,k);
+      double aVar = in->delta_A*r_vec[ir]+in->delta_B;
+      dpp[izr] *= 1.0/(aVar*(4.-aVar)*(4.-aVar*aVar));
+    }
+  }
+  
+ }
+
+}
 
 //********************************************************************************************************************************************************************************
   //************************************************************* THE GALAXY CONSTRUCTOR *******************************************************************************************
     //********************************************************************************************************************************************************************************
 
 
-  Galaxy::Galaxy(Input* in, TNucleiList* l) {
+Galaxy::Galaxy(Input* in, TNucleiList* l) {
 
     if (in->feedback > 0) cout << "Welcome to the Galaxy constructor " << endl;
          

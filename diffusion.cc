@@ -249,6 +249,10 @@ TDiffusionCoefficient2D::TDiffusionCoefficient2D(TGrid* Coord, Input* in, TSourc
 
 
   //MW130625: order correct?
+  double sp_ = 0;
+  double sp_rup_ = 0;
+  double sp_rdown_ = 0;
+  
   for (unsigned int i = 0; i < dimr; ++i) {
     double dr_central = 0.5 * (dr_up[i]+dr_down[i]);
             
@@ -264,18 +268,32 @@ TDiffusionCoefficient2D::TDiffusionCoefficient2D(TGrid* Coord, Input* in, TSourc
       double indspat_zdown = index(i,k-1);
 
       for  (int ip = 0; ip < pp.size(); ip++) {
-                        
-	double sp_ = sp[ip];
 
+	if (in->VariableDelta == false){
+	  sp_ = sp[ip];
+	  sp_rup_ = sp_;
+	  sp_rdown_ = sp_;
+	}
+	
+	else{
+	  sp_ = spectrum_extended[index_rzp(ip,k,i)];
+	  
+	  if (i == dimr-1)  sp_rup_ = sp_;
+	  else sp_rup_ = spectrum_extended[index_rzp(ip,k,i+1)];
+	  
+	  if (i == 0) sp_rdown_ = sp_;
+	  else sp_rdown_ = spectrum_extended[index_rzp(ip,k,i-1)];
+	}
+	
 	double D       = dperp[indspat]*sp_;
-	double D_rup   = dperp[indspat_rup]*sp_;
-	double D_rdown = dperp[indspat_rdown]*sp_;
+	double D_rup   = dperp[indspat_rup]*sp_rup_;
+	double D_rdown = dperp[indspat_rdown]*sp_rdown_;
 	double D_zup   = dperp[indspat_zup]*sp_;
 	double D_zdown = dperp[indspat_zdown]*sp_;
         
-	CNdiff_alpha1_r.push_back(D/(dr_central*dr_down[i]) - (D_rup-D_rdown)/(4*dr_central*dr_central));
+	CNdiff_alpha1_r.push_back(D/(dr_central*dr_down[i]) - (D_rup-D_rdown)/(4*dr_central*dr_central) ); // This is in phi! - (0.5/dr_central * (dperp[indspat]/max(u,r[i]))*sp_)
 	CNdiff_alpha2_r.push_back(D/(dr_central*dr_up[i]) + D/(dr_down[i]*dr_central));
-	CNdiff_alpha3_r.push_back((D_rup-D_rdown)/(4*dr_central*dr_central) + D/(dr_up[i]*dr_central));
+	CNdiff_alpha3_r.push_back((D_rup-D_rdown)/(4*dr_central*dr_central) + D/(dr_up[i]*dr_central) ); // This is in phi! + (0.5/dr_central * (dperp[indspat]/max(u,r[i]))*sp_)
                         
 	CNdiff_alpha1_z.push_back(D/(dz_central*dz_down[k]) - (D_zup-D_zdown)/(4*dz_central*dz_central));
 	CNdiff_alpha2_z.push_back(D/(dz_central*dz_up[k]) + D/(dz_down[k]*dz_central));
