@@ -105,18 +105,36 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
    
    // Following quantities depend on rigidity, but are computed independently of the nucleus, to save memory and time. Here the necessary additional nucleus-dependent factors are restored.
    
-	int bin=0;
-	for (int k = 0; k < dimE; k++) if(totmomentum[k]<dperp->Getrho_b()) bin=k;
+   int bin=0;
+   for (int k = 0; k < dimE; k++) if(totmomentum[k]<dperp->Getrho_b()) bin=k;
    
-        double dperpfactor[dimE];
-        double dppfactor[dimE];
+   double dperpfactor[dimr][dimE];
+   double dppfactor[dimr][dimE];
+
+   for (int i = 0; i < dimr; i++) {
+     for (int k = 0; k < dimE; k++){
+       if (A==0)    dperpfactor[i][k] = 1.0;
+     
+       else{
+	 
+	 if(k<=bin){
+	   if (in->VariableDelta == true) dperpfactor[i][k] = pow(A/fabs(Z), in->delta_B + in->delta_A*in->robs);
+	   else  	   dperpfactor[i][k] = pow(A/fabs(Z),dperp->GetDelta());
+	 }
+	 
+	 else{
+	   if (in->VariableDelta == true)     dperpfactor[i][k] = pow(A/fabs(Z),in->delta_B + in->delta_A*in->robs);
+	   else   dperpfactor[i][k] = pow(A/fabs(Z),dperp->GetDelta_h());
+	 }
+	 
+       }
+       
+       dppfactor[i][k]=1.0/dperpfactor[i][k];
+     
+     }
+   }
    
-	for (int k = 0; k < dimE; k++){
-		if(k<=bin) dperpfactor[k] = (A==0) ? 1.0 : pow(A/fabs(Z),dperp->GetDelta());
-		else dperpfactor[k] = (A==0) ? 1.0 : pow(A/fabs(Z),dperp->GetDelta_h());
-		dppfactor[k]=1.0/dperpfactor[k];
-	}
-  
+   
    vector<double> gamma(coord->GetGamma());
    
    /* Some initialization */
@@ -145,7 +163,7 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
          double dpp1 = 0.0;
          
          for (k = 1; k < dimE-1; k++) {
-            if (dpp) dpp1 = dppfactor[k]*dpp->GetReaccelerationCoefficient(indspat);
+	   if (dpp) dpp1 = dppfactor[i][k]*dpp->GetReaccelerationCoefficient(indspat);
             
             double momentumup = totmomentum[k+1];
             double momentumfix = totmomentum[k];
@@ -212,9 +230,10 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
    
    double halfdtbar = 0.0;
    double halfdt = 0.0;
-   
-   double halfdt_dperp_factor[dimE];
-	for(int e=0;e<dimE;e++) halfdt_dperp_factor[e]=0.;
+
+   double halfdt_dperp_factor[dimr][dimE];
+      for (int ii = 0; ii < dimr; ii++) {
+	for(int e=0;e<dimE;e++) halfdt_dperp_factor[ii][e]=0.; }
    
    const double decay = (daughter!=0);
    int Niter = 0;
@@ -232,7 +251,8 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
       
       halfdtbar = 0.5*dtbar;
       halfdt = 0.5*dt;
-      for(int e=0;e<dimE;e++) halfdt_dperp_factor[e] = halfdt*dperpfactor[e];
+      for (int ii = 0; ii < dimr; ii++) {
+	for(int e=0;e<dimE;e++) halfdt_dperp_factor[ii][e] = halfdt*dperpfactor[ii][e];}
       
       for (Niter = 0; Niter < in->Nrept; ++Niter) {
          
@@ -310,12 +330,12 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
                         vCi1 = vC->GetCNconv_alpha3_z(indspat);
                      }
                      
-                     uodzz[i] = -CNalphaz3*halfdt_dperp_factor[ip] - halfdt*vCi1;
-                     lodzz[i] = -CNalphaz1*halfdt_dperp_factor[ip] - halfdt*vC1i;
+		     uodzz[i] = -CNalphaz3*halfdt_dperp_factor[j][ip] - halfdt*vCi1;
+                     lodzz[i] = -CNalphaz1*halfdt_dperp_factor[j][ip] - halfdt*vC1i;
 
 		     //totalgas->GetGas(indspat)*halfdtbarxseck
 		     double gas_xsec = halfdtbar_xsec * totalgas->GetGas(indspat);	
-                     dzz[i] = 1. + CNalphaz2*halfdt_dperp_factor[ip] + gas_xsec + halfdtbarlifetimegammak + halfdt*vCi;
+		     dzz[i] = 1. + CNalphaz2*halfdt_dperp_factor[j][ip] + gas_xsec + halfdtbarlifetimegammak + halfdt*vCi;
                      
                      //         cout << "[MW-DEBUG] " << j << " " << i << " | " << CNalphaz1 << " " << CNalphaz2 << " " << CNalphaz3 << " " << vC1i << " " << vCi << " " << vCi1 << " | " << dzz[i] << endl;
                      
@@ -426,19 +446,19 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
                      double CNalphar1 = dperp->GetCNdiff_alpha1_r(ind);
                      double CNalphar2 = dperp->GetCNdiff_alpha2_r(ind);
                      double CNalphar3 = dperp->GetCNdiff_alpha3_r(ind);
-                     double halfdtdperpfactorphi = halfdt_dperp_factor[ip]*dperp->GetPhi(indspat)*sp;
+		     double halfdtdperpfactorphi = halfdt_dperp_factor[i][ip]*dperp->GetPhi(indspat)*sp;
 
 		     double gas_xsec = halfdtbar_xsec * totalgas->GetGas(indspat);	                     
-                     drr[i] = 1.0 + CNalphar2*halfdt_dperp_factor[ip] + gas_xsec + halfdtbarlifetimegammak;
+		     drr[i] = 1.0 + CNalphar2*halfdt_dperp_factor[i][ip] + gas_xsec + halfdtbarlifetimegammak;
                   
                      if(i==0){
-                        uodrr[i] = -CNalphar3*halfdt_dperp_factor[ip];
+			uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip];
                         uodrr[i] *= 2; //Symmetry condition at R = 0
                      }
-                     else uodrr[i] = -CNalphar3*halfdt_dperp_factor[ip]-halfdtdperpfactorphi;
+		     else uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip]-halfdtdperpfactorphi;
                      
                      
-                     lodrr[i] = -CNalphar1*halfdt_dperp_factor[ip]+halfdtdperpfactorphi;
+		     lodrr[i] = -CNalphar1*halfdt_dperp_factor[i][ip]+halfdtdperpfactorphi;
                   
                      Rrr[i] = N[ind] * (2.0-drr[i]) + source->GetSource(indspat)*dtbarinjfactorspeck + dtbar*SecSource_[ind];
                      if (i < dimr-1) Rrr[i] -= N[ind+dimE*dimz]*uodrr[i];
