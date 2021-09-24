@@ -455,10 +455,10 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
 			uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip];
                         uodrr[i] *= 2; //Symmetry condition at R = 0
                      }
-		     else uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip] // -halfdtdperpfactorphi;   // Variable phi not used!
+		     else uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip]; //  - halfdtdperpfactorphi;   // Variable phi not used!
                      
                      
-		     lodrr[i] = -CNalphar1*halfdt_dperp_factor[i][ip]; // +halfdtdperpfactorphi;  // Variable phi not used!
+		     lodrr[i] = -CNalphar1*halfdt_dperp_factor[i][ip]; //  + halfdtdperpfactorphi;  // Variable phi not used!
                   
                      Rrr[i] = N[ind] * (2.0-drr[i]) + source->GetSource(indspat)*dtbarinjfactorspeck + dtbar*SecSource_[ind];
                      if (i < dimr-1) Rrr[i] -= N[ind+dimE*dimz]*uodrr[i];
