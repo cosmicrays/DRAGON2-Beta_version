@@ -446,7 +446,7 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
                      double CNalphar1 = dperp->GetCNdiff_alpha1_r(ind);
                      double CNalphar2 = dperp->GetCNdiff_alpha2_r(ind);
                      double CNalphar3 = dperp->GetCNdiff_alpha3_r(ind);
-		     double halfdtdperpfactorphi = halfdt_dperp_factor[i][ip]*dperp->GetPhi(indspat)*sp;
+		     //double halfdtdperpfactorphi = halfdt_dperp_factor[i][ip]*dperp->GetPhi(indspat)*sp;  // Variable phi not used!
 
 		     double gas_xsec = halfdtbar_xsec * totalgas->GetGas(indspat);	                     
 		     drr[i] = 1.0 + CNalphar2*halfdt_dperp_factor[i][ip] + gas_xsec + halfdtbarlifetimegammak;
@@ -455,10 +455,10 @@ void TCREvolutor::Run(vector<double>& N, vector<double>& N_previous, TInelasticC
 			uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip];
                         uodrr[i] *= 2; //Symmetry condition at R = 0
                      }
-		     else uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip]-halfdtdperpfactorphi;
+		     else uodrr[i] = -CNalphar3*halfdt_dperp_factor[i][ip] // -halfdtdperpfactorphi;   // Variable phi not used!
                      
                      
-		     lodrr[i] = -CNalphar1*halfdt_dperp_factor[i][ip]+halfdtdperpfactorphi;
+		     lodrr[i] = -CNalphar1*halfdt_dperp_factor[i][ip]; // +halfdtdperpfactorphi;  // Variable phi not used!
                   
                      Rrr[i] = N[ind] * (2.0-drr[i]) + source->GetSource(indspat)*dtbarinjfactorspeck + dtbar*SecSource_[ind];
                      if (i < dimr-1) Rrr[i] -= N[ind+dimE*dimz]*uodrr[i];
