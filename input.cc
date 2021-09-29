@@ -782,6 +782,7 @@ int Input::LoadFile(const string inputfilename) {
 			}
 
 			//Normalization energies and corresponding fluxes
+			cutoff_rig = QueryDoubleAttribute("CutoffRig",el);
 			sp_ref_rig_norm = QueryDoubleAttribute("ProtNormEn_GeV", el);
 			sp_ref_rig_el   = QueryDoubleAttribute("ElNormEn_GeV", el);
 			sp_ref_rig_el_extra = QueryDoubleAttribute("ElNormEnExtra_GeV", el);
