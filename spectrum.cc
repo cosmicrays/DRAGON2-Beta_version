@@ -174,9 +174,10 @@ TSpectrum::TSpectrum(TGrid* Coord, Input* in, const vector<double>& break_positi
 	}	
       }
 
-      //if (CutoffRig > 0) { 
-      //	for (int i = 0; i < pp.size(); ++i) spectrum[i] *= exp(-pp[i]/CutoffRig);
-      //}
+      
+      if (CutoffRig > 0){  spectrum[i] *= exp(-pp[i]/CutoffRig);
+	std::cout << "Cutoff: " << CutoffRig << std::endl;   }
+      
 
       if (in->feedback >0) 
 	cout << "energy = " << pp[i] << "; alpha = " <<  -slopes[slope_number] << "; spectrum = " << spectrum.back() << endl;
