@@ -273,39 +273,57 @@ TDiffusionCoefficient2D::TDiffusionCoefficient2D(TGrid* Coord, Input* in, TSourc
 	  sp_ = sp[ip];
 	  sp_rup_ = sp_;
 	  sp_rdown_ = sp_;
+	  sp_zup_ = sp_;
+	  sp_zdown_ = sp_;
 	}
 	
 	else{
 	  sp_ = spectrum_extended[index_rzp(ip,k,i)];
-	  
-	  if (i == dimr-1)  sp_rup_ = sp_;
-	  else sp_rup_ = spectrum_extended[index_rzp(ip,k,i+1)];
-	  
-	  if (i == 0) sp_rdown_ = sp_;
-	  else sp_rdown_ = spectrum_extended[index_rzp(ip,k,i-1)];
+	    
+	    if (i == dimr-1)
+	      sp_rup_ = sp_;
+	    else
+	      sp_rup_ = spectrum_extended[index_rzp(ip,k,i+1)];
+	    
+	    if (i == 0)
+	      sp_rdown_ = sp_;
+	    else
+	      sp_rdown_ = spectrum_extended[index_rzp(ip,k,i-1)];
+	    
+	    if (k == dimz-1)
+	      sp_zup_ = sp_;
+	    else
+	      sp_zup_ = spectrum_extended[index_rzp(ip,k+1,i)];
+	    
+	    if (k == 0)
+	      sp_zdown_ = sp_;
+	    else
+	      sp_zdown_ = spectrum_extended[index_rzp(ip,k-1,i)];
 	}
+	
 	
 	double D       = dperp[indspat]*sp_;
 	double D_rup   = dperp[indspat_rup]*sp_rup_;
 	double D_rdown = dperp[indspat_rdown]*sp_rdown_;
-	double D_zup   = dperp[indspat_zup]*sp_;
-	double D_zdown = dperp[indspat_zdown]*sp_;
-        
+	double D_zup   = dperp[indspat_zup]*sp_zup_;
+	double D_zdown = dperp[indspat_zdown]*sp_zdown_;
+
 	CNdiff_alpha1_r.push_back(D/(dr_central*dr_down[i]) - (D_rup-D_rdown)/(4*dr_central*dr_central) - 0.5*D/dr_central/max(u,r[i]) ); 
 	CNdiff_alpha2_r.push_back(D/(dr_central*dr_up[i]) + D/(dr_down[i]*dr_central));
 	double temp2 = 0.;
 	if (i > 1) temp2 += (0.5/dr_central * D/max(u,r[i]));
 	CNdiff_alpha3_r.push_back((D_rup-D_rdown)/(4*dr_central*dr_central) + D/(dr_up[i]*dr_central) + temp2); 
-                        
+				  
 	CNdiff_alpha1_z.push_back(D/(dz_central*dz_down[k]) - (D_zup-D_zdown)/(4*dz_central*dz_central));
 	CNdiff_alpha2_z.push_back(D/(dz_central*dz_up[k]) + D/(dz_down[k]*dz_central));
 	CNdiff_alpha3_z.push_back((D_zup-D_zdown)/(4*dz_central*dz_central) + D/(dz_up[k]*dz_central));
-                        
+
       }
     }
   }
  
 }
+
 
 
 // 3D
