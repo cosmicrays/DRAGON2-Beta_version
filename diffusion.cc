@@ -252,6 +252,9 @@ TDiffusionCoefficient2D::TDiffusionCoefficient2D(TGrid* Coord, Input* in, TSourc
   double sp_ = 0;
   double sp_rup_ = 0;
   double sp_rdown_ = 0;
+  double sp_zup_ = 0;
+  double sp_zdown_ = 0;
+	
   
   for (unsigned int i = 0; i < dimr; ++i) {
     double dr_central = 0.5 * (dr_up[i]+dr_down[i]);
