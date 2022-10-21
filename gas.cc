@@ -3,6 +3,16 @@
  * @author Luca Maccione
  * @email luca.maccione@desy.de
  * @brief File where gas classes are implemented.
+ *
+ * REFERENCES:
+ *
+ *  Ferriere2007  --> https://ui.adsabs.harvard.edu/abs/2007A%26A...467..611F/abstract 
+ *
+ *  Nakanishi2006 --> https://ui.adsabs.harvard.edu/abs/2006PASJ...58..847N/abstract
+ *
+ *  Bronfman1988  --> https://ui.adsabs.harvard.edu/abs/1988ApJ...324..248B/abstract
+ *
+ *  Pohl2008      --> https://ui.adsabs.harvard.edu/abs/2008ApJ...677..283P/abstract
  */
 #include "gas.h"
 #include "grid.h"
@@ -37,20 +47,20 @@ TH2Gas::TH2Gas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
             
 	double height_H2 = 0;
 	switch(in->gas_model) {
-	case Ferriere2007:  // https://ui.adsabs.harvard.edu/abs/2007A%26A...467..611F/abstract 
+	case Ferriere2007:  
 	  height_H2 = (r > 2.5) ? 0.059 : 0.015;
 	  density.push_back(2.0* (150.*exp(-pow((r-0.05)/.2, 2.))+0.49*exp(-pow((r-5.3)/2.2, 2.))+.24*exp(-pow((r-8.1)/1.5, 2.)))*exp(-M_LN2*pow(z[l]/height_H2,2.)));
 	  break;
                   
-	case Nakanishi2006:  // https://arxiv.org/abs/astro-ph/0610769
+	case Nakanishi2006:  
 	  density.push_back(2.0*.94*(11.2*exp(-(r)*(r)/.874)+.83*exp(-pow((r-4)/3.2, 2.)))*exp(-M_LN2*pow(z[l]/(1.06/1000.*(10.8*exp(0.28*(r))+42.78)), 2.)));
 	  break;
                   
-	case Bronfman1988:  // http://articles.adsabs.harvard.edu/pdf/1988ApJ...324..248B
+	case Bronfman1988:  
 	  density.push_back(2.0*TGas::nH2_av(r, z[l], DeltaZ, dzzGal, in));
 	  break;
 
-	case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	case Pohl2008:  
 	  std::cout << "The Pohl2008 gas distribution can only be chosen in the 3D configuration of the Galaxy... please, choose another H2 gas option"<< std::endl;   
 	  break;
 	  
@@ -81,20 +91,20 @@ TH2Gas::TH2Gas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
                
 	  double height_H2 = 0;
 	  switch(in->gas_model) {
-	  case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	  case Ferriere2007:  
 	    height_H2 = (r > 2.5) ? 0.059 : 0.015;
 	    density.push_back(2.0* (150.*exp(-pow((r-0.05)/.2, 2.))+0.49*exp(-pow((r-5.3)/2.2, 2.))+.24*exp(-pow((r-8.1)/1.5, 2.)))*exp(-M_LN2*pow(z[l]/height_H2,2.)));
 	    break;
                      
-	  case Nakanishi2006:  // https://arxiv.org/abs/astro-ph/0610769
+	  case Nakanishi2006:  
 	    density.push_back(2.0*.94*(11.2*exp(-(r)*(r)/.874)+.83*exp(-pow((r-4)/3.2, 2.)))*exp(-M_LN2*pow(z[l]/(1.06/1000.*(10.8*exp(0.28*(r))+42.78)), 2.)));
 	    break;
                      
-	  case Bronfman1988:  // http://articles.adsabs.harvard.edu/pdf/1988ApJ...324..248B
+	  case Bronfman1988:  
 	    density.push_back(2.0*TGas::nH2_av(r, z[l], DeltaZ, dzzGal, in));
 	    break;
 
-	  case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	  case Pohl2008:  
 	    std::cout << "The Pohl2008 gas distribution is not yet implemented, it will be available soon... please, choose another H2 gas option"<< std::endl;   
 	    break;
             
@@ -143,7 +153,7 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	double density_H1 = 0;
             
 	switch(in->gas_model) {
-	case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	case Ferriere2007:  
 	  if (r < 2.5) height_H1 = 0.045;
 	  else if (r < 8.5) height_H1 = 0.115;
 	  else height_H1 = 0.115*exp((r-8.5)/6.7);
@@ -153,17 +163,17 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	  density.push_back( density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)) );
 	  break;
                   
-	case Nakanishi2003:  // https://arxiv.org/abs/astro-ph/0304338
+	case Nakanishi2003:  
 	  density_H1 =  .94*(.6*exp(-r/2.4) + .24*exp(-pow((r-9.5)/4.8, 2.)));
 	  height_H1 = 1.06*(116.3 + 19.3*(r) +  4.1*(r)*(r) -0.05*(r)*(r)*(r))/1000.;
 	  density.push_back(density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)));
 	  break;
                   
-	case Gordon1976:  // http://articles.adsabs.harvard.edu/pdf/1976ApJ...208..346G
+	case Gordon1976:  
 	  density.push_back(TGas::nHI_av(r,z[l], DeltaZ, dzzGal));
 	  break;
 
-	case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	case Pohl2008:  
 	  std::cout << "The Pohl2008 gas distribution can only be chosen in the 3D configuration of the Galaxy... please, choose another HI gas option"<< std::endl;   
 	  break;
                   
@@ -197,7 +207,7 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	  double density_H1 = 0;
                
 	  switch(in->gas_model) {
-	  case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	  case Ferriere2007:  
 	    if (r < 2.5) height_H1 = 0.045;
 	    else if (r < 8.5) height_H1 = 0.115;
 	    else height_H1 = 0.115*exp((r-8.5)/6.7);
@@ -207,17 +217,17 @@ THIGas::THIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	    density.push_back( density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)) );
 	    break;
                      
-	  case Nakanishi2003:   // https://arxiv.org/abs/astro-ph/0304338
+	  case Nakanishi2003:  
 	    density_H1 =  .94*(.6*exp(-r/2.4) + .24*exp(-pow((r-9.5)/4.8, 2.)));
 	    height_H1 = 1.06*(116.3 + 19.3*(r) +  4.1*(r)*(r) -0.05*(r)*(r)*(r))/1000.;
 	    density.push_back(density_H1*exp(-M_LN2*pow(z[l]/height_H1, 2.)));
 	    break;
                      
-	  case Gordon1976:  // http://articles.adsabs.harvard.edu/pdf/1976ApJ...208..346G
+	  case Gordon1976:  
 	    density.push_back(TGas::nHI_av(r,z[l], DeltaZ, dzzGal));
             break;
 
-	  case Pohl2008:  // https://arxiv.org/abs/0712.4264
+	  case Pohl2008:  
 	    std::cout << "The Pohl2008 gas distribution is not yet implemented, it will be available soon... please, choose another HI gas option"<< std::endl;   
 	    break;
 	    
@@ -266,7 +276,7 @@ THIIGas::THIIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
 	double DeltaZ = Coord->GetDeltaZ(l);
             
 	switch(in->gas_model) {
-	case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	case Ferriere2007:  
 	  if (r < 2.5) height_HII = 0.045;
 	  else if (r < 8.5) height_HII = 0.115;
 	  else height_HII = 0.115*exp((r-8.5)/6.7);
@@ -312,7 +322,7 @@ THIIGas::THIIGas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
                
 	  switch(in->gas_model) {
 	    
-	  case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	  case Ferriere2007:  
 	  if (r < 2.5) height_HII = 0.045;
 	  else if (r < 8.5) height_HII = 0.115;
 	  else height_HII = 0.115*exp((r-8.5)/6.7);
@@ -531,15 +541,15 @@ double TGas::X_CO(double r, Input* in) {
    
    
   switch (in->xco_mode) {
-  case(SM96): // Strong&Mattox 1996
+  case(SM96): // https://ui.adsabs.harvard.edu/abs/1996A%26A...308L..21S/abstract 
     return 1.9;
     break;
     
-  case(Arimoto1996):  // https://academic.oup.com/pasj/article/48/2/275/1586728 
+  case(Arimoto1996):  // https://ui.adsabs.harvard.edu/abs/1996PASJ...48..275A/abstract 
     return 0.9*exp(r/7.1);
     break;
     
-  case (Strong2004): //Strong2004; dx.doi.org/10.1051/0004-6361:20040172
+  case (Strong2004): // https://ui.adsabs.harvard.edu/abs/2004A%26A...422L..47S/abstract 
     if (r < 3.5)
       return 0.4;
     else if (r < 5.5)
@@ -551,7 +561,7 @@ double TGas::X_CO(double r, Input* in) {
     else return 10.;
     break;
     
-  case (Ackermann2012):  // https://arxiv.org/pdf/1202.4039.pdf
+  case (Ackermann2012):  // https://ui.adsabs.harvard.edu/abs/2012ApJ...750....3A/abstract 
     if (r < 2.0)
       return 0.4;
     else if (r < 5.5)
@@ -576,7 +586,7 @@ double TGas::X_CO(double r, Input* in) {
     return in->xco_constant;
     break;
     
-  case (Evoli2012):    // https://arxiv.org/abs/1203.0570
+  case (Evoli2012):    // https://ui.adsabs.harvard.edu/abs/2012PhRvL.108u1102E/abstract 
     if (r < 2.0)
       return in->xco_inner;
     else
