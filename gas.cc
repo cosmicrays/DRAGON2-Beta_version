@@ -37,7 +37,7 @@ TH2Gas::TH2Gas(TGrid* Coord, Input* in, TGeometry* geom) : TGas() {
             
 	double height_H2 = 0;
 	switch(in->gas_model) {
-	case Ferriere2007:  // https://iopscience.iop.org/article/10.1086/305469/pdf
+	case Ferriere2007:  // https://ui.adsabs.harvard.edu/abs/2007A%26A...467..611F/abstract 
 	  height_H2 = (r > 2.5) ? 0.059 : 0.015;
 	  density.push_back(2.0* (150.*exp(-pow((r-0.05)/.2, 2.))+0.49*exp(-pow((r-5.3)/2.2, 2.))+.24*exp(-pow((r-8.1)/1.5, 2.)))*exp(-M_LN2*pow(z[l]/height_H2,2.)));
 	  break;
