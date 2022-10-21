@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
     time_t time_s;
     time_t time_e;
     
-    time(&time_s); // fix initial time
+    time(&time_s); // initial run time
 
     Input* inp = new Input();
     inp->LoadFile( argv[1] );
@@ -114,23 +114,22 @@ int main(int argc, char** argv) {
     if (inp->feedback >0) cout << "*** Welcome to DRAGON! ***" << endl;
     if (inp->feedback >0) cout << "**************************" << endl << endl;
     
-    //cout << "*** Reading xml input file... " << argv[1] << " ***" << endl;
+    cout << "*** Reading xml input file... " << argv[1] << " ***" << endl;
     
     if (inp->feedback >0) cout << "*** Creating DRAGON  ***" << endl << endl;
-    DRAGON* dr = new DRAGON(inp);
+    DRAGON* DragonObject = new DRAGON(inp);
     
     if (inp->feedback >0) cout << "*** End of DRAGON constructor ***" << endl << endl;
 
-    dr->Print();
+    DragonObject->Print();
     
-    dr->Run();
-    
-    //if(inp->write_flag) dr->CalChi2();
+    DragonObject->Run();
+   
  
-    delete dr;
+    delete DragonObject;
     delete inp;
     
-    time(&time_e); // fix final time
+    time(&time_e); // final run time
     cout << "Solution found in " << (double)(time_e-time_s) << " s." << endl;
     
     return 0;
